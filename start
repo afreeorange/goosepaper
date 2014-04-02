@@ -1,0 +1,18 @@
+#!bin/python
+
+import logging
+import os
+import sys
+
+from lockfile.pidlockfile import PIDLockFile
+from things_i_read import routed_app
+from werkzeug.serving import run_simple
+from settings import *
+
+# Run flask or gunicorn depending on options
+# Default is gunicorn
+if len(sys.argv) == 2 and sys.argv[1] == "flask":
+    run_simple(HOST, PORT, routed_app, use_reloader=True, use_debugger=DEBUG)
+else:
+    os.system("gunicorn -w 3 -b 0.0.0.0:" + str(PORT) + " things_i_read:app --daemon --access-logfile ./logs/access_log --error-log ./logs/error_log --debug --pid ./daemon.pid")
+

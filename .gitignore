@@ -1,0 +1,13 @@
+.Python
+*.pyc
+.DS_Store
+NOTES
+Thumbs.db
+bin
+daemon.pid
+include
+lib
+local
+logs
+packed.js
+packed.css

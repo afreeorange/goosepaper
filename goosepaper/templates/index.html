@@ -13,7 +13,7 @@
             </header>
             <p>{{ article.summary }}&hellip;</p>
             <p>
-                <a href="javascript://" class="delete" article_id="{{ article.id }}">
+                <a href="javascript://" class="delete" article-id="{{ article.id }}">
                     <span class="glyphicon glyphicon-remove"></span> Delete
                 </a>
             </p>
@@ -25,9 +25,9 @@
 {% block javascript %}
 $(function() {
     $('article a.delete').click(function(e) {
-        var id = $(this).attr('article_id');
+        var id = $(this).attr('article-id');
         $.ajax({
-            url: '/article/' + id,
+            url: '/articles/' + id,
             type: 'DELETE',
             success: function(result) {
                 console.log('Removed ' + id);

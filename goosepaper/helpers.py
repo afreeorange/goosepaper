@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from goose import Goose
-from things_i_read.models import Article
+from goosepaper.models import Article
 
 
 def extract(url=None):

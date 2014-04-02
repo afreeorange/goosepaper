@@ -1,5 +1,5 @@
 from datetime import datetime
-from things_i_read import db
+from goosepaper import db
 
 class Article(db.Document):
     """ A single saved article. Field definitions are done using

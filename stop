@@ -12,5 +12,5 @@ kill -9 $DAEMON_PID
 rm ./daemon.pid
 
 echo -e "Killing all workers"
-pkill -9 things_i_read:app
+pkill -9 goosepaper:app
 

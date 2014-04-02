@@ -4,9 +4,9 @@ import os
 from flask import Flask, render_template, request, abort, jsonify, send_from_directory
 from flask.ext.mongoengine import MongoEngine
 from mongoengine.errors import ValidationError
-from things_i_read import app
-from things_i_read.models import Article
-from things_i_read.helpers import extract, save_article
+from goosepaper import app
+from goosepaper.models import Article
+from goosepaper.helpers import extract, save_article
 
 
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])

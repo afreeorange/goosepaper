@@ -1,7 +1,7 @@
 from datetime import datetime
 from re import split
 
-from things_i_read import app
+from goosepaper import app
 
 @app.template_filter('paragraphs')
 def paragraphs(body=None):

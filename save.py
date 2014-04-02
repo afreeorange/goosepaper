@@ -1,4 +1,4 @@
-"""
+""" Article Saver
 Usage:
   save.py (--url=<url>)
 
@@ -8,7 +8,7 @@ Options:
 """
 from docopt import docopt
 from sys import exit
-from things_i_read import views
+from goosepaper import views
 
 # Get the URL to save
 arguments = docopt(__doc__)
@@ -16,7 +16,7 @@ url = arguments['--url']
 
 # Check if document exists
 if views.Article.objects(url__exact=url):
-    print u"You've saved this article before."
+    print "You've saved this article before."
     exit(0)
 
 # Extract

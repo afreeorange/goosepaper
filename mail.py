@@ -3,7 +3,7 @@
 Will attempt to pick up URL from STDIN
 """
 from sys import exit
-from things_i_read import views
+from goosepaper import views
 import fileinput
 
 f = open('/tmp/test.txt', 'w')

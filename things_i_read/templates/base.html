@@ -9,9 +9,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <title>Things I Read{% if self.title() %} &ndash; {% block title -%}{% endblock %}{% endif %}</title>
-        <script src="{{ url_for('static', filename='js/modernizr.min.js') }}"></script>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/things_i_read.css') }}">
         {% if self.styles() %}
         <style type="text/css">
@@ -26,8 +24,6 @@
 
         <h1>Things I Read</h1>
 
-        <hr />
-
         {# Display any flashed messages #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -38,6 +34,8 @@
         {% endwith %}
 
         <div id="content">{% block content %}{% endblock %}</div>
+
+        <hr />
 
         <h6>&copy; {{ config.CURRENT_YEAR }}
             {% if self.footer() %}
@@ -55,4 +53,3 @@
         {% endif %}
     </body>
 </html>
-

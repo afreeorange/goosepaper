@@ -1,26 +1,39 @@
-{% extends "_base.html" %}
+{% extends "base.html" %}
 {% block title %} Home {% endblock %}
 
 {% block content %}
 
     {% for article in articles %}
-        <article>
+        <article id="{{ article.id }}">
+            <hr />
             <header>
-                <h2><a href="/article/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h2>
+                <h2><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h2>
                 <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
-                <p><small>{{ article.sent|relative_date }}</small></p>
+                <p><time class="small"><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
             </header>
-            <div>
-                {{ article.summary }}&hellip;
-            </div>
+            <p>{{ article.summary }}&hellip;</p>
+            <p>
+                <a href="javascript://" class="delete" article_id="{{ article.id }}">
+                    <span class="glyphicon glyphicon-remove"></span> Delete
+                </a>
+            </p>
         </article>
-        <hr />
     {% endfor %}
 
-{% endblock %}k
+{% endblock %}
 
 {% block javascript %}
 $(function() {
-
+    $('article a.delete').click(function(e) {
+        var id = $(this).attr('article_id');
+        $.ajax({
+            url: '/article/' + id,
+            type: 'DELETE',
+            success: function(result) {
+                console.log('Removed ' + id);
+                $('#' + id).fadeOut();
+            }
+        });
+    });
 });
 {% endblock %}

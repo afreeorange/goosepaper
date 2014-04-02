@@ -1,6 +1,5 @@
 from datetime import datetime
 import os
-from re import split
 
 from flask import Flask, render_template, request, abort, jsonify, send_from_directory
 from goose import Goose
@@ -9,57 +8,6 @@ from mongoengine.errors import ValidationError
 from things_i_read import app
 from things_i_read.models import Article
 from flask.ext.mongoengine import MongoEngine
-
-
-@app.template_filter('paragraphs')
-def paragraphs(body=None):
-    paragraphs = split(r'[\n\n]+', body)
-    html = '\n'.join([u'<p>%s</p>' % paragraph for paragraph in paragraphs])
-    return html
-
-
-@app.template_filter('relative_date')
-def relative_date(time=False):
-    """
-    Get a datetime object or a int() Epoch timestamp and return a
-    pretty string like 'an hour ago', 'Yesterday', '3 months ago',
-    'just now', etc
-    """
-    now = datetime.now()
-    if type(time) is int:
-        diff = now - datetime.fromtimestamp(time)
-    elif isinstance(time,datetime):
-        diff = now - time 
-    elif not time:
-        diff = now - now
-    second_diff = diff.seconds
-    day_diff = diff.days
-
-    if day_diff < 0:
-        return ''
-
-    if day_diff == 0:
-        if second_diff < 10:
-            return "just now"
-        if second_diff < 60:
-            return str(second_diff) + " seconds ago"
-        if second_diff < 120:
-            return  "a minute ago"
-        if second_diff < 3600:
-            return str( second_diff / 60 ) + " minutes ago"
-        if second_diff < 7200:
-            return "an hour ago"
-        if second_diff < 86400:
-            return str( second_diff / 3600 ) + " hours ago"
-    if day_diff == 1:
-        return "Yesterday"
-    if day_diff < 7:
-        return str(day_diff) + " days ago"
-    if day_diff < 31:
-        return str(day_diff/7) + " weeks ago"
-    if day_diff < 365:
-        return str(day_diff/30) + " months ago"
-    return str(day_diff/365) + " years ago"
 
 
 def extract(url=None):
@@ -81,11 +29,11 @@ def save_article(article):
                  sent=str(datetime.now()),
                  url=article.url,
                  body=article.cleaned_text,
-                 domain=article.domain,
+                 domain=article.domain.replace('www.',''),
                  summary=article.cleaned_text[:255] ).save()
 
 
-@app.route('/article/<id>', methods=['GET', 'DELETE'])
+@app.route('/articles/<id>', methods=['GET', 'DELETE'])
 def article(id=None):
     """ Display or remove a single saved article """
     article = Article.objects.get_or_404(id__exact=id)
@@ -103,6 +51,7 @@ def article(id=None):
 
 @app.route('/save', methods=['GET', 'POST'])
 def save():
+    """ Save a URI or show some information on how to do so """
     # Display information if GET-ting page
     if request.method == 'GET':
         return render_template('save.html')
@@ -125,6 +74,7 @@ def save():
 
 @app.route('/')
 @app.route('/index')
+@app.route('/articles')
 def index():
     return render_template("index.html", 
                            articles=Article.objects().order_by('-sent'))

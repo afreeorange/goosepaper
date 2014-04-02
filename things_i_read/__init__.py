@@ -24,7 +24,7 @@ except ConnectionError, e:
     print "If on another server or port, look at settings.py."
     exit(1)
 
-from things_i_read import views, models
+from things_i_read import views, models, filters
 if __name__ == '__main__':
     app.run()
 

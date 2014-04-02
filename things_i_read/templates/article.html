@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+{% block title %} {{ article.title }} {% endblock %}
+
+{% block content %}
+
+    <article>
+        <header>
+            <h2>{{ article.title }}</h2>
+            <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
+            <p><small>Added {{ article.sent|relative_date }}</small></p>
+        </header>
+        <div>
+            {{ article.body|paragraphs|safe }}
+        </div>
+    </article>
+    <hr />
+
+{% endblock %}

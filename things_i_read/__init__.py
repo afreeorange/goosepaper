@@ -1,13 +1,11 @@
 from datetime import datetime
+from sys import exit
+
 from flask import Flask
 from flask.ext.mongoengine import MongoEngine
-from flask.ext.script import Manager
-from jinja2 import Environment
 
 app = Flask(__name__)
 app.config.from_object('settings')
-
-from things_i_read import views, models
 
 # Set up routing appropriately
 if app.config['APPLICATION_ROOT']:
@@ -26,4 +24,7 @@ except ConnectionError, e:
     print "If on another server or port, look at settings.py."
     exit(1)
 
-manager = Manager(app)
+from things_i_read import views, models
+if __name__ == '__main__':
+    app.run()
+

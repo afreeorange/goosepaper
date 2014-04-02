@@ -4,12 +4,16 @@
 {% block content %}
 
     {% for article in articles %}
-        <h3><a href="{{ article.url }}" title="{{ article.title }}">{{ article.title }}</a></h3>
-        <h4>{{ article.sent|relative_date }}</h4>
-        <h5>{{ article.domain }}</h5>
-        <div class="article">
-            {{ article.body|paragraphs|safe }}
-        </div>
+        <article>
+            <header>
+                <h2><a href="/article/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h2>
+                <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
+                <p><small>{{ article.sent|relative_date }}</small></p>
+            </header>
+            <div>
+                {{ article.summary }}&hellip;
+            </div>
+        </article>
         <hr />
     {% endfor %}
 

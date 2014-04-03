@@ -1,6 +1,6 @@
 # Goosepaper
 
-Being a small [Flask](http://flask.pocoo.org/) application written around the [Goose Extractor](https://github.com/codelucas/newspaper) module.
+Being a small [Flask](http://flask.pocoo.org/) application written around the awesome [Newspaper](https://github.com/codelucas/newspaper) module.
 
 ## Installation
 

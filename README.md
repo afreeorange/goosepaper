@@ -8,7 +8,8 @@ Being a small [Flask](http://flask.pocoo.org/) application written around the aw
 * Run the `install` script, then source `./bin/activate`
 * Run `./start flask`
 
-## Usage
+Usage
+-----
 
 ### REST
 
@@ -24,7 +25,18 @@ To delete
 
 ### Command-line
 
+Source `bin/activate` then
+
     python save.py --url=http://article
+
+### Email
+
+* Edit `mail.py` to change the host and port values.
+* Then set up an alias and pipe the email to `mail.py`. For example, this is what I have in `/etc/aliases`
+
+		Nlr5zbrLCgwTOA3ApKKa: 	|"/path/to/mail.py"
+
+* Send an email to alias with the _subject line_ containing the URL.
 
 License
 -------

@@ -1,7 +1,14 @@
 from datetime import datetime
 import os
 
-from flask import Flask, render_template, request, abort, jsonify, send_from_directory
+from flask import (
+    abort, 
+    Flask, 
+    jsonify, 
+    render_template, 
+    request, 
+    send_from_directory
+)
 from flask.ext.mongoengine import MongoEngine
 from goosepaper import app
 from goosepaper.helpers import extract, save_article

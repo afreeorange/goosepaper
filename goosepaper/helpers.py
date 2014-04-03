@@ -1,38 +1,34 @@
 from datetime import datetime
 
 from goose import Goose
-from goosepaper.models import Article
+from newspaper import Article
+from goosepaper.models import SavedArticle
 
 
 def extract(url=None):
     """ Attempts to extract article from URL """
-    g = Goose()
-    try:
-        article = g.extract(url=url)
-    except Exception, e:
-        print "Oops! The goose says:", str(e)
-        return False
-
-    article.url = url
-    return article
+    a = Article(url)
+    a.download()
+    a.parse()
+    return a
 
 
 def save_article(article):
     """ Save article to MongoDB instance """
 
     # Check if document exists. If it does, simply update the save date.
-    if Article.objects(url__exact=article.url):
-        Article.objects.get(url__exact=article.url).update(set__sent=str(datetime.now()))
+    if SavedArticle.objects(url__exact=article.url):
+        SavedArticle.objects.get(url__exact=article.url).update(set__sent=str(datetime.now()))
         return True
 
     # Else, insert record
     try:
-        Article( title=article.title,
+        SavedArticle( title=article.title,
                  sent=str(datetime.now()),
                  url=article.url,
-                 body=article.cleaned_text,
-                 domain=article.domain.replace('www.',''),
-                 summary=article.cleaned_text[:255] ).save()
+                 body=article.text,
+                 domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
+                 summary=article.text[:255] ).save()
     except Exception, e:
         print "Oops! The goose says:", str(e)
         return False

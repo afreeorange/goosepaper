@@ -1,7 +1,7 @@
 from datetime import datetime
 from goosepaper import db
 
-class Article(db.Document):
+class SavedArticle(db.Document):
     """ A single saved article. Field definitions are done using
         Flask-MongoEngine (see db in __init__.py)
     """

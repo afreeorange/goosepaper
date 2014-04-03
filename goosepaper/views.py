@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, abort, jsonify, send_from_dir
 from flask.ext.mongoengine import MongoEngine
 from goosepaper import app
 from goosepaper.helpers import extract, save_article
-from goosepaper.models import Article
+from goosepaper.models import SavedArticle
 
 
 @app.route('/save', methods=['GET', 'POST'])
@@ -35,7 +35,7 @@ def save():
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])
 def article(id=None):
     """ Display or remove a single saved article """
-    article = Article.objects.get_or_404(id__exact=id)
+    article = SavedArticle.objects.get_or_404(id__exact=id)
 
     # Display or delete the article depending on request method
     if request.method in ['GET', 'get']:
@@ -53,7 +53,7 @@ def article(id=None):
 @app.route('/articles')
 def index():
     return render_template("index.html", 
-                           articles=Article.objects().order_by('-sent'))
+                           articles=SavedArticle.objects().order_by('-sent'))
 
 
 @app.route('/favicon.ico')

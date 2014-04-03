@@ -7,7 +7,7 @@
         <article id="{{ article.id }}">
             <hr />
             <header>
-                <h2><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h2>
+                <h3><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h3>
                 <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
                 <p><time class="small"><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
             </header>
@@ -20,20 +20,4 @@
         </article>
     {% endfor %}
 
-{% endblock %}
-
-{% block javascript %}
-$(function() {
-    $('article a.delete').click(function(e) {
-        var id = $(this).attr('article-id');
-        $.ajax({
-            url: '/articles/' + id,
-            type: 'DELETE',
-            success: function(result) {
-                console.log('Removed ' + id);
-                $('#' + id).fadeOut();
-            }
-        });
-    });
-});
 {% endblock %}

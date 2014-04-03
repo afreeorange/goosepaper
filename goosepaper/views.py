@@ -28,15 +28,12 @@ def save():
         abort(401)
     url = request.headers['Article'].strip()
 
-    # Attempt to extract article
+    # Attempt to extract and save article
     article = extract(url)
-    if not article:
-        return "Error extracting URL\n"
-
     if not save_article(article):
-        return "Database error\n"
+        abort(400)
 
-    return "Saved\n"
+    return jsonify({})
 
 
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])

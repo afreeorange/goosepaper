@@ -6,9 +6,9 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="description" content="goosepaper, a Flask app built around the goose-extractor module">
+        <meta name="description" content="I'm a goose and these are my papers">
         <meta name="viewport" content="width=device-width">
-        <title>Things I Read{% if self.title() %} &ndash; {% block title -%}{% endblock %}{% endif %}</title>
+        <title>Goosepaper{% if self.title() %} &ndash; {% block title -%}{% endblock %}{% endif %}</title>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/goosepaper.css') }}">
     </head>
@@ -17,7 +17,17 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade it for a better web experience</a>.</p>
         <![endif]-->
 
-        <h1>goosepaper</h1>
+        <h1>goosepaper
+            {% if request.endpoint == 'index' %} 
+            <a href="#" title="Add an article">+</a>
+            {% elif request.endpoint == 'article' %} 
+            <a href="/" title="Home">&larr;</a>
+            {% endif %}
+        </h1> 
+
+        {% if request.endpoint == 'index' %}
+        <input type="text" class="form-control" id="articlebox" placeholder="add a URL (then hit enter)" />
+        {% endif %}
 
         {# Display any flashed messages #}
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -32,14 +42,11 @@
 
         <hr />
 
-        <h6>&copy; {{ config.CURRENT_YEAR }}
-            {% if self.footer() %}
-                {% block footer %}{% endblock %}
-            {% endif %}
-        </h6>
+        <h6><a href="https://github.com/afreeorange/goosepaper" title="Goosepaper on Github">Goosepaper on Github</a></h6>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='js/jquery.min.js') }}"><\/script>')</script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script src="{{ url_for('static', filename='js/goosepaper.js') }}"></script>
         {% if self.javascript() -%}
         <script type="text/javascript">

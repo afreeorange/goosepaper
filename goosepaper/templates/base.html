@@ -6,23 +6,18 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="description" content="">
+        <meta name="description" content="goosepaper, a Flask app built around the goose-extractor module">
         <meta name="viewport" content="width=device-width">
         <title>Things I Read{% if self.title() %} &ndash; {% block title -%}{% endblock %}{% endif %}</title>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/goosepaper.css') }}">
-        {% if self.styles() %}
-        <style type="text/css">
-            {% block styles %}{% endblock %}
-        </style>
-        {% endif %}
     </head>
     <body class="container">
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade it for a better web experience</a>.</p>
         <![endif]-->
 
-        <h1>Things I Read</h1>
+        <h1>goosepaper</h1>
 
         {# Display any flashed messages #}
         {% with messages = get_flashed_messages(with_categories=true) %}

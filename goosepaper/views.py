@@ -3,10 +3,33 @@ import os
 
 from flask import Flask, render_template, request, abort, jsonify, send_from_directory
 from flask.ext.mongoengine import MongoEngine
-from mongoengine.errors import ValidationError
 from goosepaper import app
-from goosepaper.models import Article
 from goosepaper.helpers import extract, save_article
+from goosepaper.models import Article
+
+
+@app.route('/save', methods=['GET', 'POST'])
+def save():
+    """ Save a URI or show some information on how to do so """
+    # Display information if GET-ting page
+    if request.method == 'GET':
+        return render_template('save.html')
+
+    # Only other method allowed at this point is POST. 
+    # Check for 'Article' header and get the URL.
+    if 'Article' not in request.headers:
+        abort(401)
+    url = request.headers['Article'].strip()
+
+    # Attempt to extract article
+    article = extract(url)
+    if not article:
+        return "Error extracting URL\n"
+
+    if not save_article(article):
+        return "Database error\n"
+
+    return "Saved\n"
 
 
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])
@@ -23,29 +46,6 @@ def article(id=None):
         except Exception, e:
             abort(500)
     return "Removed\n"
-
-
-@app.route('/save', methods=['GET', 'POST'])
-def save():
-    """ Save a URI or show some information on how to do so """
-    # Display information if GET-ting page
-    if request.method == 'GET':
-        return render_template('save.html')
-
-    # Only other method allowed at this point is POST. 
-    # Check for 'Article' header
-    if 'Article' not in request.headers:
-        abort(401)
-
-    url = request.headers['Article'].strip()
-
-    # Check if document exists
-    if Article.objects(url__exact=url):
-        return "Exists\n"
-
-    article = extract(url)
-    save_article(article)
-    return "OK\n"
 
 
 @app.route('/')

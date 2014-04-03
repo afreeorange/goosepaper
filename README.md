@@ -1,6 +1,6 @@
 # Goosepaper
 
-Being a small [Flask](http://flask.pocoo.org/) application written around the [Goose Extractor](https://pypi.python.org/pypi/goose-extractor/) module.
+Being a small [Flask](http://flask.pocoo.org/) application written around the [Goose Extractor](https://github.com/codelucas/newspaper) module.
 
 ## Installation
 

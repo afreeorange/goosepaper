@@ -19,9 +19,11 @@ jieba==0.32
 lockfile==0.9.1
 lxml==3.3.3
 mongoengine==0.8.7
+newspaper==0.0.6
 nltk==2.0.4
 pymongo==2.6.3
 python-dateutil==2.2
+requests==2.2.1
 six==1.6.1
 webassets==0.8
 wsgiref==0.1.2

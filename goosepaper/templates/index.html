@@ -2,22 +2,28 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
-
     {% for article in articles %}
-        <article id="{{ article.id }}">
-            <header>
-                <h3><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h3>
-                <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
-                <p><time class="small"><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
-            </header>
-            <p>{{ article.summary }}&hellip;</p>
-            <p>
-                <a href="javascript://" class="delete" article-id="{{ article.id }}">
-                    <span class="glyphicon glyphicon-remove"></span> Delete
-                </a>
-            </p>
-            <hr />
-        </article>
-    {% endfor %}
 
+        <div class="row">
+            <div class="col-xs-12">
+
+                <article id="{{ article.id }}">
+                    <header>
+                        <h3><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h3>
+                        <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
+                        <p><time class="small"><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
+                    </header>
+                    <p>{{ article.summary }}&hellip;</p>
+                    <p>
+                        <a href="javascript://" class="delete" article-id="{{ article.id }}">
+                            <span class="glyphicon glyphicon-remove"></span> Delete
+                        </a>
+                    </p>
+                </article>
+                <hr />
+
+            </div>
+        </div>
+
+    {% endfor %}
 {% endblock %}

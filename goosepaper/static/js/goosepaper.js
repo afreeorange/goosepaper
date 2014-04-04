@@ -48,10 +48,10 @@ $(function() {
             type: 'DELETE',
             statusCode: {
                 200: function() {
-                    $('#' + id).fadeOut(250);
+                    $('#' + id).closest('.row').slideUp();
                 },
                 500: function() {
-                    $('#' + id + ' p a').text('Error :(');
+                    $('#' + id + ' p a.delete').text('Error :(');
                 }
             }
         });

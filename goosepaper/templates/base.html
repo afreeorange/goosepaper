@@ -18,36 +18,48 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade it for a better web experience</a>.</p>
         <![endif]-->
 
-        <h1>
-            {% if request.endpoint == 'index' %} 
-            goosepaper <a href="#" title="Add an article">+</a>
-            {% elif request.endpoint == 'article' %} 
-            <a href="/" title="Home">goosepaper</a>
-            {% endif %}
-        </h1> 
+        <div class="row">
+            <div class="col-xs-9">
+                <header>
+                    <h1>
+                    {%- if request.endpoint == 'article' -%}
+                        <a href="/" title="List of articles">goosepaper</a>
+                    {%- else -%}
+                        goosepaper
+                    {% endif -%}
+                    </h1>
+                </header>
+            </div>
+            <div class="col-xs-3 right">
+                {% if request.endpoint == 'index' -%} 
+                    <h1><a href="#" title="Add an article">+</a></h1>
+                {%- endif %}
+            </div>
+        </div>
 
-        <hr />
-
-        {% if request.endpoint == 'index' %}
+        {%- if request.endpoint == 'index' %}
         <input type="text" class="form-control" id="articlebox" placeholder="add a URL (then hit enter)" />
-        {% endif %}
+        {%- endif -%}
 
         {# Display any flashed messages #}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
+        {%- with messages = get_flashed_messages(with_categories=true) -%}
+            {%- if messages -%}
+                {%- for category, message in messages -%}
                     <div class="alert">{{ message }} </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+                {%- endfor -%}
+                <hr />
+            {%- endif -%}
+        {%- endwith -%}
 
-        <div id="content">{% block content %}{% endblock %}</div>
+        {%- block content -%}{%- endblock -%}
 
-        <h6><a href="https://github.com/afreeorange/goosepaper" title="Goosepaper on Github">Goosepaper on Github</a></h6>
+        <footer>
+            <p>Source <a href="https://github.com/afreeorange/goosepaper" title="Goosepaper on Github">on Github</a></p>
+        </footer>
 
-        {% assets filters="jsmin", output="js/packed.js", "js/jquery.min.js", "js/goosepaper.js" %}
+        {% assets filters="jsmin", output="js/packed.js", "js/jquery.min.js", "js/goosepaper.js" -%}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {% endassets %}
+        {%- endassets -%}
         {% if self.javascript() -%}
         <script type="text/javascript">
         {% block javascript %}{% endblock %}

@@ -6,9 +6,9 @@ from goosepaper import app
 from goosepaper.models import SavedArticle
 
 
-def extract(url=None):
+def extract(url=None, keep_html=True):
     """ Attempts to extract article from URL """
-    a = Article(url)
+    a = Article(url, keep_article_html=keep_html)
     a.download()
     a.parse()
     return a
@@ -27,9 +27,9 @@ def save_article(article):
         SavedArticle(title=article.title,
                      sent=str(datetime.now()),
                      url=article.url,
-                     body=article.text,
+                     body=article.article_html,
                      domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
-                     summary=article.text[:app.config['SUMMARY_LENGTH']] ).save()
+                     summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
     except Exception, e:
         print "Oops! The goose says:", str(e)
         return False

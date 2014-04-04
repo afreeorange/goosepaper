@@ -11,3 +11,4 @@ class SavedArticle(db.Document):
     domain = db.StringField(required=True, max_length=255)
     body = db.StringField(required=True)
     summary = db.StringField(required=False)
+    favorite = db.BooleanField(required=False, default=False)

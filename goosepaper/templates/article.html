@@ -9,8 +9,28 @@
             <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
             <p><time class="small"><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
         </header>
-        {{ article.body|paragraphs|safe }}
+        <div>
+        {{ article.body|safe }}
+        </div>
     </article>
     <hr />
 
+{% endblock %}
+
+{% block javascript %}
+$(function() {
+    // $.fn.editable.defaults.mode = 'inline';
+    // $('article header h3').editable({
+    //     type: 'text', 
+    //     url: '/save',
+    //     title: 'Edit title',
+    //     rows: 10
+    // });
+    // $('article div').editable({
+    //     type: 'text', 
+    //     url: '/save',
+    //     title: 'Edit title',
+    //     rows: 20
+    // });
+});
 {% endblock %}

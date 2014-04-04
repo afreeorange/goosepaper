@@ -15,6 +15,29 @@ from goosepaper.helpers import extract, save_article
 from goosepaper.models import SavedArticle
 
 
+@app.route('/favorites', methods=['POST', 'DELETE', 'GET'])
+def favorites(id=None):
+    """ Manage favorites """
+    if request.method == 'GET':
+        return render_template('favorites.html', articles=SavedArticle.objects(favorite=True).order_by('-sent'))
+
+    # Get the ID. Abort if not supplied in headers.
+    if 'Id' not in request.headers:
+        abort(401)
+    id = request.headers['Id'].strip()
+
+    # Set or unset the favorites attribute depending on request method
+    action = {'POST': True, 'DELETE': False}
+    SavedArticle.objects.get_or_404(id__exact=id).update(set__favorite=action[request.method])
+    return "OK\n"
+
+
+@app.route('/save')
+def save():
+    print str(request.params)
+    return str(request.params)
+
+
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])
 def article(id=None):
     """ Display or remove a single saved article """
@@ -28,7 +51,7 @@ def article(id=None):
             article.delete()
         except Exception, e:
             abort(500)
-    return "Removed\n"
+    return "Removed"
 
 
 @app.route('/', methods=['GET', 'POST'])

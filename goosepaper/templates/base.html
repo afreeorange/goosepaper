@@ -11,9 +11,8 @@
         <title>Goosepaper{% if self.title() %} &ndash; {% block title -%}{% endblock %}{% endif %}</title>
         <link rel="icon" type="image/png" href="/favicon.png">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        {% assets "stylesheets" -%}
-        <link rel="stylesheet" href="{{ ASSET_URL }}">
-        {%- endassets -%}
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/goosepaper.css') }}">
     </head>
     <body class="container">
         <!--[if lt IE 7]>
@@ -21,20 +20,27 @@
         <![endif]-->
 
         <div class="row">
-            <div class="col-xs-9">
+            <div class="col-xs-8">
                 <header>
                     <h1>
-                    {%- if request.endpoint == 'article' -%}
+                    {%- if request.endpoint != 'index' -%}
                         <a href="/" title="List of articles">goosepaper</a>
                     {%- else -%}
                         goosepaper
                     {% endif -%}
+                    {% if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
                     </h1>
                 </header>
             </div>
-            <div class="col-xs-3 right">
+            <div class="col-xs-4 right">
                 {% if request.endpoint == 'index' -%} 
-                    <h1><a href="#" title="Add an article">+</a></h1>
+                    <h2>
+                        <a href="/favorites" title="View favorites" class="glyphicon glyphicon-heart">s</a>
+                        <a href="javascript://" title="Condense list" class="glyphicon glyphicon-list"><span>Condense list</span></a>
+                        <a href="javascript://" title="Add article" class="glyphicon glyphicon-plus"><span>Add article</span></a>
+                    </h2>
+                {% elif request.endpoint == 'favorites' -%} 
+                    <h2><span class="glyphicon glyphicon-heart loved">s</span></h2>
                 {%- endif %}
             </div>
         </div>
@@ -60,9 +66,9 @@
         </footer>
 
         <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        {% assets filters="jsmin", output="js/packed.js", "js/goosepaper.js" -%}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {%- endassets -%}
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+        <script src="{{ url_for('static', filename='js/goosepaper.js') }}"></script>
         {% if self.javascript() -%}
         <script type="text/javascript">
         {% block javascript %}{% endblock %}

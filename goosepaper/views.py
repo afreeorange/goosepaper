@@ -15,27 +15,6 @@ from goosepaper.helpers import extract, save_article
 from goosepaper.models import SavedArticle
 
 
-@app.route('/save', methods=['GET', 'POST'])
-def save():
-    """ Save a URI or show some information on how to do so """
-    # Display information if GET-ting page
-    if request.method == 'GET':
-        return render_template('save.html')
-
-    # Only other method allowed at this point is POST. 
-    # Check for 'Article' header and get the URL.
-    if 'Article' not in request.headers:
-        abort(401)
-    url = request.headers['Article'].strip()
-
-    # Attempt to extract and save article
-    article = extract(url)
-    if not save_article(article):
-        abort(400)
-
-    return jsonify({})
-
-
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])
 def article(id=None):
     """ Display or remove a single saved article """
@@ -52,12 +31,28 @@ def article(id=None):
     return "Removed\n"
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/index')
 @app.route('/articles')
 def index():
-    return render_template("index.html", 
-                           articles=SavedArticle.objects().order_by('-sent'))
+    """ Save a URI or show some information on how to do so """
+    # Display articles if GET-ting a page
+    if request.method == 'GET':
+        return render_template("index.html", 
+                               articles=SavedArticle.objects().order_by('-sent'))
+
+    # Only other method allowed at this point is POST. 
+    # Check for 'Article' header and get the URL.
+    if 'Article' not in request.headers:
+        abort(401)
+    url = request.headers['Article'].strip()
+
+    # Attempt to extract and save article
+    article = extract(url)
+    if not save_article(article):
+        abort(400)
+
+    return jsonify({})
 
 
 @app.route('/favicon.png')

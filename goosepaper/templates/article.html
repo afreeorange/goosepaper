@@ -9,9 +9,7 @@
             <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
             <p><time class="small"><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
         </header>
-        <div>
-            {{ article.body|paragraphs|safe }}
-        </div>
+        {{ article.body|paragraphs|safe }}
     </article>
     <hr />
 

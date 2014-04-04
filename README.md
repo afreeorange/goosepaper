@@ -6,26 +6,28 @@ Being a small [Flask](http://flask.pocoo.org/) application written around the aw
 
 * Have a MongoDB instance running. Default is `localhost:27017`. Change this in `settings.py`.
 * Run the `install` script, then source `./bin/activate`
-* Run `./start flask`
+* Run `./start flask` for a dev server
 
-Usage
------
+Adding Articles
+---------------
 
-### REST
+### Web
+
+Click the "+" to add a URL.
+
+### Command-line
 
 To save
 
 	curl -X POST \
 		 -H "article: http://time.com/jonathan-ive-apple-interview" \
-		 http://localhost:5000/save
+		 http://localhost:5000/
 
 To delete
 
 	curl -X DELETE http://localhost:5000/article/533c67a364b6c00bf64864a3
 
-### Command-line
-
-Source `bin/activate` then
+Or source `bin/activate` then
 
     python save.py --url=http://article
 

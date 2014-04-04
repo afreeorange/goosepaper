@@ -24,17 +24,18 @@ def save_article(article):
 
     # Else, insert record
     try:
-        SavedArticle( title=article.title,
-                 sent=str(datetime.now()),
-                 url=article.url,
-                 body=article.text,
-                 domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
-                 summary=article.text[:app.config['SUMMARY_LENGTH']] ).save()
+        SavedArticle(title=article.title,
+                     sent=str(datetime.now()),
+                     url=article.url,
+                     body=article.text,
+                     domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
+                     summary=article.text[:app.config['SUMMARY_LENGTH']] ).save()
     except Exception, e:
         print "Oops! The goose says:", str(e)
         return False
     else:
         return True
+
 
 def cli_save(url):
     """ Helper for CLI scripts """

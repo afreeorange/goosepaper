@@ -5,6 +5,7 @@ from flask import Flask
 from flask.ext.mongoengine import MongoEngine
 from flask.ext.assets import Environment, Bundle
 
+
 app = Flask(__name__)
 app.config.from_object('settings')
 
@@ -15,8 +16,12 @@ if app.config['APPLICATION_ROOT']:
 else:
 	routed_app = app
 
-# Set up Flask Assets
+# Set up compressed CSS and JS
 assets = Environment(app)
+assets.register('scripts', Bundle('js/goosepaper.js',
+                                  filters='jsmin', output='js/packed.js'))
+assets.register('stylesheets', Bundle('css/goosepaper.css', 
+                                  filters='cssmin', output='css/packed.css'))
 
 # Set up database connection
 try:
@@ -31,4 +36,3 @@ except ConnectionError, e:
 from goosepaper import views, models, filters
 if __name__ == '__main__':
     app.run()
-

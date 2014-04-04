@@ -23,18 +23,19 @@ $(function() {
     $('#articlebox').onEnter(function(e) {
         $(this).prop('disabled', true);
         jQuery.ajax({
-            url: '/save',
+            url: '/',
             type: 'POST',
             headers: {'article': $(this).val()},
             statusCode: {
                 200: function() {
-                    $('h1').text('reloading...');
+                    $('header h1').text('reloading...');
                     location.reload();
                 },
                 400: function() {
-                    $('#articlebox').val('');
-                    $('#articlebox').prop('disabled', false);
-                    $('#articlebox').attr('placeholder', "I couldn't save that :(");
+                    $('#articlebox')
+                        .val('')
+                        .prop('disabled', false)
+                        .attr('placeholder', "I couldn't save that :(");
                 }
             }
         });

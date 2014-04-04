@@ -24,3 +24,10 @@ hr {
     padding: 0;
     margin: 0;
 }
+.delete {
+    color: #999;
+}
+.delete:hover {
+    color: #666;
+    text-decoration: none;
+}

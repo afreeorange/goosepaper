@@ -5,7 +5,6 @@
 
     {% for article in articles %}
         <article id="{{ article.id }}">
-            <hr />
             <header>
                 <h3><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h3>
                 <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
@@ -17,6 +16,7 @@
                     <span class="glyphicon glyphicon-remove"></span> Delete
                 </a>
             </p>
+            <hr />
         </article>
     {% endfor %}
 

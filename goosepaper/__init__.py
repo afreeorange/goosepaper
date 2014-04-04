@@ -3,6 +3,7 @@ from sys import exit
 
 from flask import Flask
 from flask.ext.mongoengine import MongoEngine
+from flask.ext.assets import Environment, Bundle
 
 app = Flask(__name__)
 app.config.from_object('settings')
@@ -13,6 +14,9 @@ if app.config['APPLICATION_ROOT']:
 	routed_app = DispatcherMiddleware(app, {app.config['APPLICATION_ROOT']: app})
 else:
 	routed_app = app
+
+# Set up Flask Assets
+assets = Environment(app)
 
 # Set up database connection
 try:

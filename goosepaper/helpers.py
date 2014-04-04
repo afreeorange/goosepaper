@@ -2,6 +2,7 @@ from datetime import datetime
 
 from goose import Goose
 from newspaper import Article
+from goosepaper import app
 from goosepaper.models import SavedArticle
 
 
@@ -28,7 +29,7 @@ def save_article(article):
                  url=article.url,
                  body=article.text,
                  domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
-                 summary=article.text[:255] ).save()
+                 summary=article.text[:app.config['SUMMARY_LENGTH']] ).save()
     except Exception, e:
         print "Oops! The goose says:", str(e)
         return False

@@ -6,7 +6,7 @@
                 func.apply(this, [e]);    
             }
         });
-        return this; 
+        return this;
      };
 })(jQuery);
 
@@ -15,6 +15,7 @@ $(function() {
     // Show/hide the add box
     $('h1 a').click(function() {
         $('#articlebox').toggle();
+        $('#articlebox').focus();
         $(this).text() == '+' ? $(this).text('-') : $(this).text('+');
     });
 
@@ -47,7 +48,7 @@ $(function() {
             type: 'DELETE',
             statusCode: {
                 200: function() {
-                    $('#' + id).fadeOut();
+                    $('#' + id).fadeOut(250);
                 },
                 500: function() {
                     $('#' + id + ' p a').text('Error :(');

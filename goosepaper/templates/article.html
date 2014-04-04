@@ -3,7 +3,6 @@
 
 {% block content %}
 
-    <hr />
     <article>
         <header>
             <h3>{{ article.title }}</h3>
@@ -14,5 +13,6 @@
             {{ article.body|paragraphs|safe }}
         </div>
     </article>
+    <hr />
 
 {% endblock %}

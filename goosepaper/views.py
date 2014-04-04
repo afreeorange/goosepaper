@@ -60,9 +60,8 @@ def index():
                            articles=SavedArticle.objects().order_by('-sent'))
 
 
-@app.route('/favicon.ico')
+@app.route('/favicon.png')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static/img'),
-                               'favicon.ico',
-                               mimetype='image/vnd.microsoft.icon')
+                               'favicon.png')
 

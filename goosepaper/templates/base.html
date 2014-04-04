@@ -9,6 +9,7 @@
         <meta name="description" content="I'm a goose and these are my papers">
         <meta name="viewport" content="width=device-width">
         <title>Goosepaper{% if self.title() %} &ndash; {% block title -%}{% endblock %}{% endif %}</title>
+        <link rel="icon" type="image/png" href="/favicon.png">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/goosepaper.css') }}">
     </head>
@@ -17,13 +18,15 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade it for a better web experience</a>.</p>
         <![endif]-->
 
-        <h1>goosepaper
+        <h1>
             {% if request.endpoint == 'index' %} 
-            <a href="#" title="Add an article">+</a>
+            goosepaper <a href="#" title="Add an article">+</a>
             {% elif request.endpoint == 'article' %} 
-            <a href="/" title="Home">&larr;</a>
+            <a href="/" title="Home">goosepaper</a>
             {% endif %}
         </h1> 
+
+        <hr />
 
         {% if request.endpoint == 'index' %}
         <input type="text" class="form-control" id="articlebox" placeholder="add a URL (then hit enter)" />
@@ -40,18 +43,16 @@
 
         <div id="content">{% block content %}{% endblock %}</div>
 
-        <hr />
-
         <h6><a href="https://github.com/afreeorange/goosepaper" title="Goosepaper on Github">Goosepaper on Github</a></h6>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='js/jquery.min.js') }}"><\/script>')</script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-        <script src="{{ url_for('static', filename='js/goosepaper.js') }}"></script>
+        {% assets filters="jsmin", output="js/packed.js", "js/jquery.min.js", "js/goosepaper.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
         {% if self.javascript() -%}
         <script type="text/javascript">
         {% block javascript %}{% endblock %}
         </script>
         {% endif %}
+
     </body>
 </html>

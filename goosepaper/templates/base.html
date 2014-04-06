@@ -35,12 +35,12 @@
             <div class="col-xs-4 right">
                 {% if request.endpoint == 'index' -%} 
                     <h2>
-                        <a href="/favorites" title="View favorites" class="glyphicon glyphicon-heart">s</a>
+                        <a href="/favorites" title="View favorites" class="glyphicon glyphicon-heart"></a>
                         <a href="javascript://" title="Condense list" class="glyphicon glyphicon-list"><span>Condense list</span></a>
                         <a href="javascript://" title="Add article" class="glyphicon glyphicon-plus"><span>Add article</span></a>
                     </h2>
                 {% elif request.endpoint == 'favorites' -%} 
-                    <h2><span class="glyphicon glyphicon-heart loved">s</span></h2>
+                    <h2><span class="glyphicon glyphicon-heart loved"></span></h2>
                 {%- endif %}
             </div>
         </div>
@@ -59,7 +59,9 @@
             {%- endif -%}
         {%- endwith -%}
 
+        <div id="content">
         {%- block content -%}{%- endblock %}
+        </div>
 
         <footer>
             <p>Source <a href="https://github.com/afreeorange/goosepaper" title="Goosepaper on Github">on Github</a></p>
@@ -68,6 +70,7 @@
         <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+        <script src="{{ url_for('static', filename='js/jquery.infinitescroll.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/goosepaper.js') }}"></script>
         {% if self.javascript() -%}
         <script type="text/javascript">

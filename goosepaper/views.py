@@ -9,17 +9,20 @@ from flask import (
     request, 
     send_from_directory
 )
-from flask.ext.mongoengine import MongoEngine
+from flask.ext.mongoengine import MongoEngine, Pagination
 from goosepaper import app
 from goosepaper.helpers import extract, save_article
 from goosepaper.models import SavedArticle
 
 
+@app.route('/favorites/page/<int:number>')
+@app.route('/favorites/page')
 @app.route('/favorites', methods=['POST', 'DELETE', 'GET'])
-def favorites(id=None):
+def favorites(number=1):
     """ Manage favorites """
     if request.method == 'GET':
-        return render_template('favorites.html', articles=SavedArticle.objects(favorite=True).order_by('-sent'))
+        paginator = Pagination(SavedArticle.objects(favorite=True).order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
+        return render_template('favorites.html', paginator=paginator)
 
     # Get the ID. Abort if not supplied in headers.
     if 'Id' not in request.headers:
@@ -57,12 +60,13 @@ def article(id=None):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index')
 @app.route('/articles')
-def index():
+@app.route('/page/<int:number>')
+def index(number=1):
     """ Save a URI or show some information on how to do so """
     # Display articles if GET-ting a page
     if request.method == 'GET':
-        return render_template("index.html", 
-                               articles=SavedArticle.objects().order_by('-sent'))
+        paginator = Pagination(SavedArticle.objects.order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
+        return render_template("index.html", paginator=paginator)
 
     # Only other method allowed at this point is POST. 
     # Check for 'Article' header and get the URL.
@@ -75,7 +79,7 @@ def index():
     if not save_article(article):
         abort(400)
 
-    return jsonify({})
+    return "OK"
 
 
 @app.route('/favicon.png')

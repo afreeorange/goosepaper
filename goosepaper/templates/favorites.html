@@ -2,32 +2,37 @@
 {% block title %} Favorites {% endblock %}
 
 {% block content %}
-    {% for article in articles %}
+    {% for article in paginator.items %}
 
-        <div class="row">
-            <div class="col-xs-12">
+    <div class="row">
+        <div class="col-xs-12">
 
-                <article id="{{ article.id }}">
-                    <header>
-                        <h3><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h3>
-                    </header>
-                    <div class="fold">
-                        <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
-                        <p>{{ article.summary }}&hellip;</p>
-                        <p class="small options">
-                            <time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time> 
-                            {% if article.favorite %}
-                            <span class="favorite slideparent loved glyphicon glyphicon-heart"></span>
-                            {% else %}
-                            <span class="favorite slideparent unloved glyphicon glyphicon-heart-empty"></span>
-                            {% endif %}
-                        </p>                        
-                    </div>
-                </article>
-                <hr />
+            <article id="{{ article.id }}">
+                <header>
+                    <h3><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h3>
+                </header>
+                <div class="fold">
+                    <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
+                    <p>{{ article.summary }}&hellip;</p>
+                    <p class="small options">
+                        <time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time> 
+                        <a href="javascript://" class="delete" article-id="{{ article.id }}"><span class="glyphicon glyphicon-remove"></span> remove</a>
+                        {% if article.favorite %}
+                        <span class="favorite slideparent loved glyphicon glyphicon-heart"></span>
+                        {% else %}
+                        <span class="favorite slideparent unloved glyphicon glyphicon-heart-empty"></span>
+                        {% endif %}
+                    </p>
+                </div>
+            </article>
+            <hr />
 
-            </div>
         </div>
+    </div>
 
     {% endfor %}
+
+    <nav>
+        <a href="/favorites/page/{{ paginator.page + 1 }}"></a>
+    </nav>
 {% endblock %}

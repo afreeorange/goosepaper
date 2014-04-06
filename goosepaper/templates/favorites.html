@@ -11,7 +11,7 @@
                 <header>
                     <h3><a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a></h3>
                 </header>
-                <div class="fold">
+                <div class="fold{% if request.cookies.get('collapse') %} folded{% endif %}">
                     <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span></h4>
                     <p>{{ article.summary }}&hellip;</p>
                     <p class="small options">
@@ -24,8 +24,8 @@
                         {% endif %}
                     </p>
                 </div>
+                <hr />
             </article>
-            <hr />
 
         </div>
     </div>

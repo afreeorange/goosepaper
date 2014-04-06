@@ -5,8 +5,8 @@ h1 {
 h2 a span {
     display: none;
 }
-h2 a {
-    margin-left: 5px;
+h2 a, span {
+    margin-right: 10px;
 }
 h1 a:hover,
 h2 a:hover,
@@ -57,4 +57,13 @@ time {
 #infscr-loading {
     margin: 20px auto;
     text-align: center;
+}
+.folded {
+    display: none;
+}
+footer {
+    padding: 40px 0;
+}
+.folded-icon {
+    color: #FF3300;
 }

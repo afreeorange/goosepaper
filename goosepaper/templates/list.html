@@ -42,6 +42,8 @@
     <nav>
         {%- if request.endpoint == 'search' %}
         <a href="/search/{{ term }}/page/{{ paginator.page + 1 }}"></a>
+        {%- elif request.endpoint == 'favorites' %}
+        <a href="/favorites/page/{{ paginator.page + 1 }}"></a>
         {% else %}
         <a href="/page/{{ paginator.page + 1 }}"></a>
         {%- endif %}

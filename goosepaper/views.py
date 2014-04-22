@@ -25,7 +25,7 @@ def favorites(number=1):
     """ Manage favorites """
     if request.method == 'GET':
         paginator = Pagination(SavedArticle.objects(favorite=True).order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
-        return render_template('favorites.html', paginator=paginator)
+        return render_template('list.html', paginator=paginator)
 
     # Get the ID. Abort if not supplied in headers.
     if 'Id' not in request.headers:
@@ -63,7 +63,7 @@ def search(term, number=1):
         return jsonify({'error': 'Search term must be longer than 3 characters'})
 
     paginator = Pagination(SavedArticle.objects(Q(title__icontains=term) | Q(domain__icontains=term) | Q(body__icontains=term)).exclude('body').order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
-    return render_template("index.html", paginator=paginator, term=term)
+    return render_template("list.html", paginator=paginator, term=term)
 
     # results = []
     # for article in articles:
@@ -82,7 +82,7 @@ def index(number=1):
     # Display articles if GET-ting a page
     if request.method == 'GET':
         paginator = Pagination(SavedArticle.objects.order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
-        return render_template("index.html", paginator=paginator)
+        return render_template("list.html", paginator=paginator)
 
     # Only other method allowed at this point is POST. 
     # Check for 'Article' header and get the URL.

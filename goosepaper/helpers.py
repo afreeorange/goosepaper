@@ -24,18 +24,23 @@ def save_article(article):
 
     # Else, insert record
     try:
-        SavedArticle(title=article.title,
-                     sent=str(datetime.now()),
-                     url=article.url,
-                     body=article.article_html,
-                     authors=article.authors,
-                     domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
-                     summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
+        a = SavedArticle(title=article.title,
+                         sent=str(datetime.now()),
+                         url=article.url,
+                         body=article.article_html,
+                         authors=article.authors,
+                         domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
+                         summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
     except Exception, e:
         print "Oops! The goose says:", str(e)
-        return False
+        return {}
     else:
-        return True
+        return {
+            'id': a.id,
+            'title': a.title,
+            'summary': a.summary,
+            'domain': a.domain
+        }
 
 
 def cli_save(url):
@@ -71,7 +76,7 @@ def mongo_object_to_dict(obj):
         elif isinstance(obj._fields[field_name], db.IntField):
             return_data.append((field_name, int(data)))
         elif isinstance(obj._fields[field_name], db.ListField):
-            return_data.append((field_name, int(data)))
+            return_data.append((field_name, ','.join([str(i) for i in data])))
         elif isinstance(obj._fields[field_name], db.DateTimeField):
             return_data.append((field_name, str(data.isoformat())))
         elif isinstance(obj._fields[field_name], db.BooleanField):

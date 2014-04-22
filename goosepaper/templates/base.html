@@ -20,14 +20,14 @@
         <![endif]-->
 
         <div class="row">
-            <div class="col-sm-7">
+            <div class="col-sm-8">
                 <header>
                     <h1>goosepaper
                         {%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
                     </h1>
                 </header>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-4">
                 <h2>
                     {% if request.endpoint == 'favorites' -%} 
                     <span class="glyphicon glyphicon-heart red"></span>
@@ -91,6 +91,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
         <script src="{{ url_for('static', filename='js/jquery.infinitescroll.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/jquery.cookie.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.highlight.js') }}"></script>
         <script src="{{ url_for('static', filename='js/goosepaper.js') }}"></script>
         {% if self.javascript() -%}
         <script type="text/javascript">

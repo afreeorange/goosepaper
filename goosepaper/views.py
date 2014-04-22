@@ -92,7 +92,8 @@ def index(number=1):
 
     # Attempt to extract and save article
     article = extract(url)
-    if not save_article(article):
+    saved_article = save_article(article)
+    if not any(saved_article):
         abort(400)
 
     return "OK"

@@ -17,7 +17,19 @@ jQuery.fn.replaceClass = function(toReplace,replaceWith){
     });
 }
 
+// Get a URL parameter
+// https://gist.github.com/varemenos/2531765
+function get_url_param(key){
+    var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
+    return result && unescape(result[1]) || null; 
+}
+
 $(function() {
+
+    var search_term = get_url_param('highlight');
+    if (search_term) {
+        $('#content').highlight(search_term);
+    };
 
     // Show/hide the search
     $('h2 a.glyphicon-search').click(function() {

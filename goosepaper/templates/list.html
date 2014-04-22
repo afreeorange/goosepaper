@@ -10,10 +10,7 @@
             <article id="{{ article.id }}">
                 <header>
                     <h3>
-                        <a href="/articles/{{ article.id }}" title="Permanent link to article">{{ article.title }}</a> 
-                        {% if article.authors %}
-                        by {{ article.authors|join(', ') }}
-                        {% endif %}
+                        <a href="/articles/{{ article.id }}{%- if request.endpoint == 'search' %}?highlight={{ term }}{%- endif %}" title="Permanent link to article">{{ article.title }}</a>
                     </h3>
                 </header>
                 <div class="fold{% if request.cookies.get('collapse') %} folded{% endif %}">
@@ -21,15 +18,23 @@
                         <a href="{{ article.url }}" title="{{ article.title }}">{{ article.domain }}</a> <span class="glyphicon glyphicon-share-alt"></span>
                     </h4>
                     <p>{{ article.summary }}&hellip;</p>
-                    <p class="options">
-                        <time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time> 
-                        <a href="javascript://" class="delete" article-id="{{ article.id }}"><span class="glyphicon glyphicon-remove"></span> remove</a>
-                        {% if article.favorite %}
-                        <span class="favorite red glyphicon glyphicon-heart"></span>
-                        {% else %}
-                        <span class="favorite gray glyphicon glyphicon-heart-empty"></span>
-                        {% endif %}
-                    </p>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="options">
+                                <a href="javascript://" class="delete" article-id="{{ article.id }}"><span class="glyphicon glyphicon-remove"></span> remove</a>
+                                {% if article.favorite %}
+                                <span class="favorite red glyphicon glyphicon-heart"></span>
+                                {% else %}
+                                <span class="favorite gray glyphicon glyphicon-heart-empty"></span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-sm-3 pull-right">
+                            <p class="small right">
+                                <time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time>
+                            </p>
+                        </div>
+                    </div> {# End row #}
                 </div>
                 <hr />
             </article>
@@ -44,7 +49,7 @@
         <a href="/search/{{ term }}/page/{{ paginator.page + 1 }}"></a>
         {%- elif request.endpoint == 'favorites' %}
         <a href="/favorites/page/{{ paginator.page + 1 }}"></a>
-        {% else %}
+        {%- else %}
         <a href="/page/{{ paginator.page + 1 }}"></a>
         {%- endif %}
     </nav>

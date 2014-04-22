@@ -14,9 +14,6 @@ h3 a:hover,
 h4 a:hover {
     text-decoration: none;
 }
-h3 {
-    color: #CCC;
-}
 h4,
 h4 a {
     color: #666;
@@ -70,4 +67,14 @@ footer {
 }
 .folded-icon {
     color: #FF3300;
+}
+.highlight {
+    background-color: #FFFF88;
+    border: 1px solid #FFCF40;
+    padding: 0 2px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
+    border-radius: 4px;
 }

@@ -10,5 +10,9 @@ class SavedArticle(db.Document):
     url = db.URLField(required=True)
     domain = db.StringField(required=True, max_length=255)
     body = db.StringField(required=True)
+    authors = db.ListField(required=False)
     summary = db.StringField(required=False)
     favorite = db.BooleanField(required=False, default=False)
+    meta = {
+        'indexes': ['title', 'domain', 'summary', 'authors']
+    }

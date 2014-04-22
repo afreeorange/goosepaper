@@ -19,6 +19,35 @@ jQuery.fn.replaceClass = function(toReplace,replaceWith){
 
 $(function() {
 
+    // Show/hide the search
+    $('h2 a.glyphicon-search').click(function() {
+        $('#articlebox').hide();
+
+        $('#searchbox').toggle();
+        $('#searchbox').focus();
+        
+        $(this).toggleClass('red');
+        $('h2 a.glyphicon-plus').removeClass('red');
+    });
+
+    // Show/hide the add box
+    $('h2 a.glyphicon-plus').click(function() {
+        $('#searchbox').hide();
+
+        $('#articlebox').toggle();
+        $('#articlebox').focus();
+
+        $(this).toggleClass('red');
+        $('h2 a.glyphicon-search').removeClass('red');
+    });
+
+    // Toggle a condensed view
+    $('h2 a.glyphicon-list').click(function() {
+        $('.fold').toggle();
+        $.cookie('collapse') ? $.removeCookie('collapse') : $.cookie('collapse', true);
+        $(this).toggleClass('folded-icon');
+    });
+
     // Infinite scroll the page
     $('#content').infinitescroll({
         navSelector: 'nav',
@@ -33,18 +62,18 @@ $(function() {
     });
 
     // Un/favorite an article
-    $('.favorite').click(function() {
+    $('#content').on('click', '.favorite', function() {
         var id = $(this).closest('article').attr('id');
 
         // Set the HTTP verb and adjust display of button
         var verb = 'POST';
-        if ($(this).hasClass('loved')) {
-            $(this).replaceClass('loved', 'unloved'); 
+        if ($(this).hasClass('red')) {
+            $(this).replaceClass('red', 'gray'); 
             $(this).replaceClass('glyphicon-heart', 'glyphicon-heart-empty');
             var verb = 'DELETE';
         }
-        else if ($(this).hasClass('unloved')) {
-            $(this).replaceClass('unloved', 'loved');
+        else if ($(this).hasClass('gray')) {
+            $(this).replaceClass('gray', 'red');
             $(this).replaceClass('glyphicon-heart-empty', 'glyphicon-heart'); 
         };
 
@@ -59,26 +88,6 @@ $(function() {
         if ($(this).hasClass('slideparent')) {
             $('#' + id).closest('.row').slideUp();
         };
-    });
-
-    // Toggle a condensed view
-    $('h2 a.glyphicon-list').click(function() {
-        $('.fold').toggle();
-        if ($.cookie('collapse')) {
-            $.removeCookie('collapse');
-        } else {
-            $.cookie('collapse', true);
-        }
-        $(this).toggleClass('folded-icon');
-    });
-
-    // Show/hide the add box
-    $('h2 a.glyphicon-plus').click(function() {
-        $('#articlebox').toggle();
-        $('#articlebox').focus();
-        $(this).hasClass('glyphicon-plus') ? 
-            $(this).replaceClass('glyphicon-plus', 'glyphicon-minus') : 
-            $(this).replaceClass('glyphicon-minus', 'glyphicon-plus');
     });
 
     // Add an article
@@ -100,24 +109,29 @@ $(function() {
                         .attr('placeholder', "I couldn't save that :(");
                 }
             }
-        });
+        }); // End Ajax call
+    });
+
+    // Search articles
+    $('#searchbox').onEnter(function(e) {
+        location.replace('/search/' + $(this).val());
     });
 
     // Delete an article
-    $('article a.delete').click(function(e) {
+    $('#content').on('click', '.delete', function(e) {
         var id = $(this).attr('article-id');
         $.ajax({
             url: '/articles/' + id,
             type: 'DELETE',
             statusCode: {
                 200: function() {
-                    $('#' + id).closest('.row').slideUp();
+                    $('#' + id).slideUp();
                 },
                 500: function() {
                     $('#' + id + ' p a.delete').text('Error :(');
                 }
             }
-        });
+        }); // End Ajax call
     });
 
 });

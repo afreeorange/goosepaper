@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import json
 
 from flask import (
     abort, 
@@ -7,11 +8,13 @@ from flask import (
     jsonify, 
     render_template, 
     request, 
+    Response,
     send_from_directory
 )
+from mongoengine import Q
 from flask.ext.mongoengine import MongoEngine, Pagination
 from goosepaper import app
-from goosepaper.helpers import extract, save_article
+from goosepaper.helpers import extract, save_article, mongo_object_to_dict
 from goosepaper.models import SavedArticle
 
 
@@ -35,12 +38,6 @@ def favorites(number=1):
     return "OK\n"
 
 
-@app.route('/save')
-def save():
-    print str(request.params)
-    return str(request.params)
-
-
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])
 def article(id=None):
     """ Display or remove a single saved article """
@@ -57,10 +54,29 @@ def article(id=None):
     return "Removed"
 
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index')
-@app.route('/articles')
+@app.route('/search/<string:term>/page/<int:number>')
+@app.route('/search/<string:term>')
+def search(term, number=1):
+    term = term.strip()
+
+    if len(term) < 4:
+        return jsonify({'error': 'Search term must be longer than 3 characters'})
+
+    paginator = Pagination(SavedArticle.objects(Q(title__icontains=term) | Q(domain__icontains=term) | Q(body__icontains=term)).exclude('body').order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
+    return render_template("index.html", paginator=paginator, term=term)
+
+    # results = []
+    # for article in articles:
+    #     results.append(mongo_object_to_dict(article))
+
+    # http://flask.pocoo.org/docs/security/#json-security
+    # return Response(json.dumps(results), mimetype='application/json')
+
+
 @app.route('/page/<int:number>')
+@app.route('/articles')
+@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
 def index(number=1):
     """ Save a URI or show some information on how to do so """
     # Display articles if GET-ting a page

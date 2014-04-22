@@ -2,7 +2,7 @@ from datetime import datetime
 
 from goose import Goose
 from newspaper import Article
-from goosepaper import app
+from goosepaper import app, db
 from goosepaper.models import SavedArticle
 
 
@@ -28,6 +28,7 @@ def save_article(article):
                      sent=str(datetime.now()),
                      url=article.url,
                      body=article.article_html,
+                     authors=article.authors,
                      domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
                      summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
     except Exception, e:
@@ -51,3 +52,31 @@ def cli_save(url):
 
     print "Saved"
     exit(0)
+
+
+def mongo_object_to_dict(obj):
+    return_data = []
+    for field_name in obj._fields:
+        data = obj._data[field_name]
+
+        if data is None:
+            continue
+
+        if isinstance(obj._fields[field_name], db.ObjectIdField):
+            return_data.append((field_name, str(data)))
+        elif isinstance(obj._fields[field_name], db.StringField):
+            return_data.append((field_name, data.encode('utf-8')))
+        elif isinstance(obj._fields[field_name], db.FloatField):
+            return_data.append((field_name, float(data)))
+        elif isinstance(obj._fields[field_name], db.IntField):
+            return_data.append((field_name, int(data)))
+        elif isinstance(obj._fields[field_name], db.ListField):
+            return_data.append((field_name, int(data)))
+        elif isinstance(obj._fields[field_name], db.DateTimeField):
+            return_data.append((field_name, str(data.isoformat())))
+        elif isinstance(obj._fields[field_name], db.BooleanField):
+            return_data.append((field_name, data))
+        else:
+            pass
+
+    return dict(return_data)

@@ -9,6 +9,5 @@ include
 lib
 local
 logs
-packed.js
-packed.css
+*packed*
 *webassets*

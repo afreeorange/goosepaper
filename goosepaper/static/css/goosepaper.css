@@ -5,7 +5,7 @@ h1 {
 h2 a span {
     display: none;
 }
-h2 a, span {
+h2 a, h2 span {
     margin-right: 10px;
 }
 h1 a:hover,
@@ -14,6 +14,9 @@ h3 a:hover,
 h4 a:hover {
     text-decoration: none;
 }
+h3 {
+    color: #CCC;
+}
 h4,
 h4 a {
     color: #666;
@@ -21,7 +24,8 @@ h4 a {
 h4 a:hover {
     color: #333;
 }
-#articlebox {
+#articlebox,
+#searchbox {
     display: none;
 }
 .right {
@@ -44,10 +48,10 @@ hr {
 .favorite {
     cursor: pointer;
 }
-.unloved {
+.gray {
     color: #999;
 }
-.loved {
+.red {
     color: #FF3300!important;
 }
 time {

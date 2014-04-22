@@ -7,7 +7,6 @@ Options:
 
 """
 from docopt import docopt
-from sys import exit
 from goosepaper.helpers import cli_save
 
 # Get the URL to save

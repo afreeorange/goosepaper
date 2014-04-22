@@ -5,7 +5,7 @@ import httplib
 
 host = 'localhost'
 port = 5000
-endpoint = '/save'
+endpoint = '/'
 
 # Get STDIN, get first match
 url_pattern = re.compile(ur'Subject: ((?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019])))')

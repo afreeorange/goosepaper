@@ -2,8 +2,9 @@ from datetime import datetime
 from sys import exit
 
 from flask import Flask
-from flask.ext.mongoengine import MongoEngine
 from flask.ext.assets import Environment, Bundle
+from flask.ext.mongoengine import MongoEngine
+from logbook import FileHandler, Logger
 
 
 app = Flask(__name__)
@@ -22,6 +23,11 @@ assets.register('scripts', Bundle('js/goosepaper.js',
                                   filters='jsmin', output='js/packed.js'))
 assets.register('stylesheets', Bundle('css/goosepaper.css', 
                                   filters='cssmin', output='css/packed.css'))
+
+# Set up logging
+log_handler = FileHandler('logs/goosepaper.log')
+log_handler.push_application()
+log = Logger('goosepaper')
 
 # Set up database connection
 try:

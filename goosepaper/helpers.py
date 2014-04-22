@@ -2,16 +2,26 @@ from datetime import datetime
 
 from goose import Goose
 from newspaper import Article
-from goosepaper import app, db
+from goosepaper import app, db, log
 from goosepaper.models import SavedArticle
 
 
 def extract(url=None, keep_html=True):
     """ Attempts to extract article from URL """
     a = Article(url, keep_article_html=keep_html)
-    a.download()
-    a.parse()
-    return a
+    try:
+        a.download()
+    except Exception, e:
+        log.error('Error extracting %s: %s' % (url, str(e)))
+    else:
+        try:
+            a.parse()
+        except Exception, e:
+            log.error('Error extracting %s: %s' % (url, str(e)))
+            return False
+        else:
+            log.info('Extracted %s' % url)
+            return a
 
 
 def save_article(article):
@@ -32,9 +42,10 @@ def save_article(article):
                          domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
                          summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
     except Exception, e:
-        print "Oops! The goose says:", str(e)
+        log.error('Error saving article: %s' % str(e))
         return {}
     else:
+        log.info('%s saved from %s' % (str(a.id), article.url))
         return {
             'id': a.id,
             'title': a.title,
@@ -60,6 +71,7 @@ def cli_save(url):
 
 
 def mongo_object_to_dict(obj):
+    """ Convert a MongoEngine object to a dictionary """
     return_data = []
     for field_name in obj._fields:
         data = obj._data[field_name]

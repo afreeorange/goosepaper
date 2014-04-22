@@ -1,6 +1,6 @@
 from datetime import datetime
-import os
 import json
+import os
 
 from flask import (
     abort, 
@@ -11,11 +11,11 @@ from flask import (
     Response,
     send_from_directory
 )
-from mongoengine import Q
 from flask.ext.mongoengine import MongoEngine, Pagination
-from goosepaper import app
+from goosepaper import app, log
 from goosepaper.helpers import extract, save_article, mongo_object_to_dict
 from goosepaper.models import SavedArticle
+from mongoengine import Q
 
 
 @app.route('/favorites/page/<int:number>')
@@ -24,17 +24,21 @@ from goosepaper.models import SavedArticle
 def favorites(number=1):
     """ Manage favorites """
     if request.method == 'GET':
-        paginator = Pagination(SavedArticle.objects(favorite=True).order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
+        paginator = Pagination(SavedArticle.objects(favorite=True).order_by('-sent'), 
+                               number, 
+                               app.config['ARTICLES_PER_PAGE'])
         return render_template('list.html', paginator=paginator)
 
     # Get the ID. Abort if not supplied in headers.
     if 'Id' not in request.headers:
+        log.error('article ID not provided for favorites')
         abort(401)
     id = request.headers['Id'].strip()
 
     # Set or unset the favorites attribute depending on request method
     action = {'POST': True, 'DELETE': False}
     SavedArticle.objects.get_or_404(id__exact=id).update(set__favorite=action[request.method])
+    log.info('%s %s in favorites' % (id, request.method))
     return "OK\n"
 
 
@@ -44,13 +48,15 @@ def article(id=None):
     article = SavedArticle.objects.get_or_404(id__exact=id)
 
     # Display or delete the article depending on request method
-    if request.method in ['GET', 'get']:
+    if request.method == 'GET':
         return render_template('article.html', article=article)
-    elif request.method in ['DELETE', 'delete']:
+    elif request.method == 'DELETE':
         try:
             article.delete()
         except Exception, e:
             abort(500)
+        else:
+            log.info('%s deleted' % id)
     return "Removed"
 
 
@@ -62,7 +68,11 @@ def search(term, number=1):
     if len(term) < 4:
         return jsonify({'error': 'Search term must be longer than 3 characters'})
 
-    paginator = Pagination(SavedArticle.objects(Q(title__icontains=term) | Q(domain__icontains=term) | Q(body__icontains=term)).exclude('body').order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
+    paginator = Pagination(SavedArticle.objects(Q(title__icontains=term)  | 
+                                                Q(domain__icontains=term) | 
+                                                Q(body__icontains=term)).exclude('body').order_by('-sent'), 
+                                                number, 
+                                                app.config['ARTICLES_PER_PAGE'])
     return render_template("list.html", paginator=paginator, term=term)
 
     # results = []
@@ -81,7 +91,9 @@ def index(number=1):
     """ Save a URI or show some information on how to do so """
     # Display articles if GET-ting a page
     if request.method == 'GET':
-        paginator = Pagination(SavedArticle.objects.order_by('-sent'), number, app.config['ARTICLES_PER_PAGE'])
+        paginator = Pagination(SavedArticle.objects.order_by('-sent'), 
+                               number, 
+                               app.config['ARTICLES_PER_PAGE'])
         return render_template("list.html", paginator=paginator)
 
     # Only other method allowed at this point is POST. 

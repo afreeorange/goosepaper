@@ -22,8 +22,8 @@
         <div class="row">
             <div class="col-sm-8">
                 <header>
-                    <h1>goosepaper
-                        {%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
+                    <h1>
+                        goosepaper{%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
                     </h1>
                 </header>
             </div>
@@ -52,7 +52,7 @@
             {%- if request.endpoint == 'index' %}
             <input type="text" class="form-control" id="articlebox" placeholder="add a URL then hit return" />
             {%- endif -%}
-            <input type="text" class="form-control" id="searchbox" placeholder="type something and hit return" {%- if request.endpoint == 'search' %}style="display:block;"{%- endif %} />
+            <input type="text" class="form-control" id="searchbox" placeholder="type something and hit return" {%- if request.endpoint == 'search' %}style="display:block;" value="{{ term }}" {%- endif %} />
         </div>
 
         {# Display any flashed messages #}
@@ -73,8 +73,7 @@
             One article contains 
             {%- else %}
             {{ paginator.total }} articles contain 
-            {% endif %}
-            &#8220;{{ term }}&#8221;
+            {%- endif %} &#8220;{{ term }}&#8221;
         </h3>
         {% endif %}
 

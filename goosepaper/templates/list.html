@@ -9,20 +9,20 @@
         <div class="row">
             <div class="col-xs-10">
                 <header>
-                    <h3>
+                    <h3{% if request.cookies.get('fold') %} class="wrap-title"{% endif %}>
                         <a href="/articles/{{ article.id }}{%- if request.endpoint == 'search' %}?highlight={{ term }}{%- endif %}" title="Permanent link to article">{{ article.title }}</a>
                     </h3>
                 </header>
             </div>
             <div class="col-xs-1 options right">
-                <a href="javascript://" class="delete" article-id="{{ article.id }}"><span class="glyphicon glyphicon-remove"></span></a>
+                <a href="javascript://" class="delete glyphicon glyphicon-remove" article-id="{{ article.id }}"><span>Remove article</span></a>
             </div>
             <div class="col-xs-1 options right">
-                <span article-id="{{ article.id }}" class="favorite glyphicon {% if article.favorite -%}
+                <a article-id="{{ article.id }}" class="favorite glyphicon {% if article.favorite -%}
                 red glyphicon-heart
                 {%- else -%}
                 gray glyphicon-heart-empty
-                {%- endif %}"></span>
+                {%- endif %}"><span>Favorite article</span></a>
             </div>
         </div> {# End row #}
 

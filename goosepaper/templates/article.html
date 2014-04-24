@@ -4,9 +4,26 @@
 {% block content %}
 
     <article>
-        <header>
-            <h3>{{ article.title }}</h3>
-        </header>
+        <div class="row">
+            <div class="col-xs-10">
+                <header>
+                    <h3{% if request.cookies.get('fold') %} class="wrap-title"{% endif %}>
+                        {{ article.title }}
+                    </h3>
+                </header>
+            </div>
+            <div class="col-xs-1 options right">
+                <a href="javascript://" class="delete-article glyphicon glyphicon-remove" article-id="{{ article.id }}"><span>Remove article</span></a>
+            </div>
+            <div class="col-xs-1 options right">
+                <a article-id="{{ article.id }}" class="favorite glyphicon {% if article.favorite -%}
+                red glyphicon-heart
+                {%- else -%}
+                gray glyphicon-heart-empty
+                {%- endif %}"><span>Favorite article</span></a>
+            </div>
+        </div> {# End row #}
+
         <div class="row">
             <div class="col-xs-6">
                 <p><time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
@@ -15,6 +32,7 @@
                 <p><a href="{{ article.url }}" title="{{ article.title }}" class="external-link">{{ article.domain }} <span class="glyphicon glyphicon-share-alt"></span></a></p>
             </div>                    
         </div>
+
         <div class="article-text">
         {{ article.body|safe }}
         </div>

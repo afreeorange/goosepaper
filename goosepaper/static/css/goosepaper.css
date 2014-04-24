@@ -1,10 +1,6 @@
-@import url(http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic|Buenard:400,700|Lusitana:400,700);
 h1 {
     letter-spacing: -1px;
     font-weight: bold;
-}
-h2 a span {
-    display: none;
 }
 h2 a, h2 span {
     color: #999;
@@ -13,12 +9,24 @@ h2 a, h2 span {
 h2 a:hover {
     color: #333;
 }
+h3 {
+    margin-top: 10px;
+    padding-bottom: 1px;
+}
 .big-right {
     text-align: left;
+}
+.wrap-title {
+    white-space: wrap;
+    overflow: auto;
 }
 @media only screen and (min-width : 768px) {
     h2 a, h2 span {
         margin: 0 0 0 10px;
+    }
+    .wrap-title {
+        white-space: nowrap;
+        overflow: hidden;
     }
     .big-right {
         text-align: right;
@@ -32,10 +40,11 @@ h4 a:hover {
 }
 time {
     color: #CCC;
-    margin-right: 15px;
 }
+h2 a span,
 #articlebox,
 #searchbox,
+.options a span,
 .hide {
     display: none;
 }
@@ -45,14 +54,15 @@ time {
 .options {
     color: #999;
     font-size: x-large;
-    padding-top: 18px;
+    padding-top: 8px;
 }
 .options a {
     color: #999;
 }
-.options .glyphicon:hover {
-    cursor: pointer;
+.options a:hover {
     color: #333;
+    text-decoration: none;
+    cursor: pointer;
 }
 .gray {
     color: #999;
@@ -62,7 +72,6 @@ time {
 }
 .red:hover {
     color: #FF0000!important;
-    cursor: pointer;
 }
 #infscr-loading {
     margin: 20px auto;
@@ -72,6 +81,8 @@ time {
     display: none;
 }
 footer {
+    border-top: 1px dotted #CCC;
+    margin: 20px 0;
     padding: 20px 0;
 }
 .results-count {
@@ -95,7 +106,7 @@ footer {
     border-radius: 4px;
 }
 article {
-    border-bottom: 1px dotted #CCC;
+    border-top: 1px dotted #CCC;
 }
 .external-link {
     color: #CCC;

@@ -55,18 +55,16 @@ $(function() {
     $('h2 a.glyphicon-list').click(function() {
         $('.fold').toggle();
         $(this).toggleClass('red');
-        $.cookie('fold') ? $.removeCookie('fold') : $.cookie('fold', true);
+        // $.cookie('fold') ? $.removeCookie('fold') : $.cookie('fold', true);
 
         // Set overflow properties... looks like shit on mobile
-        // if ($.cookie('fold')) {
-        //     $.removeCookie('fold');
-        //     $('header h3').css('white-space', 'wrap');
-        //     $('header h3').css('overflow', 'auto');
-        // } else {
-        //     $.cookie('fold', true);
-        //     $('header h3').css('white-space', 'nowrap');
-        //     $('header h3').css('overflow', 'hidden');
-        // }
+        if ($.cookie('fold')) {
+            $.removeCookie('fold');
+            $('header h3').removeClass('wrap-title');
+        } else {
+            $.cookie('fold', true);
+            $('header h3').addClass('wrap-title');
+        }
     });
 
     // Infinite scroll the page
@@ -142,7 +140,7 @@ $(function() {
         location.replace('/search/' + $(this).val());
     });
 
-    // Delete an article
+    // Delete an article on list
     $('#content').on('click', '.delete', function(e) {
         var id = $(this).attr('article-id');
         $.ajax({
@@ -154,6 +152,24 @@ $(function() {
                 },
                 500: function() {
                     $('#' + id + ' p a.delete').text('Error :(');
+                }
+            }
+        }); // End Ajax call
+    });
+
+    // Delete an article on its page
+    // Maybe DRY and merge into the thing above
+    $('#content').on('click', '.delete-article', function(e) {
+        var id = $(this).attr('article-id');
+        $.ajax({
+            url: '/articles/' + id,
+            type: 'DELETE',
+            statusCode: {
+                200: function() {
+                    window.location = '/articles';
+                },
+                500: function() {
+                    $('header h1').text('error :(');
                 }
             }
         }); // End Ajax call

@@ -5,12 +5,38 @@ if [[ ! -e ./daemon.pid ]]; then
     exit
 fi
 
-DAEMON_PID=$(cat ./daemon.pid)
+echo -e "Killing all workers"
 
-echo -e "Stopping server with PID $DAEMON_PID..."
+DAEMON_PID=$(cat ./daemon.pid)
+echo -ne "Stopping master with PID $DAEMON_PID"
 kill -9 $DAEMON_PID
 rm ./daemon.pid
-
-echo -e "Killing all workers"
 pkill -9 goosepaper:app
 
+PROCS=$(($(ps aux | grep goosepaper:app  | wc -l) - 1))
+while [ $PROCS -ne 0 ]; do
+	PROCS=$(($(ps aux | grep goosepaper:app  | wc -l) - 1))
+	echo -n "."
+	sleep 1
+done
+
+echo -ne " done\n"
+
+#from bs4 import BeautifulSoup
+#import requests
+#
+#with open('instapaper-export.html') as file:
+#    text = file.read()
+#
+#soup = BeautifulSoup(text)
+#
+#for a in soup.find_all('a'):
+#    print "Trying", a['href']
+#    r = requests.post('http://localhost:5000/', headers={'article': a['href']})
+#    print r.status_code
+#
+## for tag in ['script', 'input', 'fieldset', 'legend', 'noscript']:
+##     for node in soup.find_all(tag):
+##         getattr(soup, tag).decompose()
+#
+## print soup.prettify()orangebox:Desktop nikhil$ rm test.py

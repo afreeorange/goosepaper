@@ -12,6 +12,10 @@ from settings import *
 # Run flask or gunicorn depending on options
 # Default is gunicorn
 if len(sys.argv) == 2 and sys.argv[1] == "flask":
+    print "Starting built-in server"
     run_simple(HOST, PORT, routed_app, use_reloader=True, use_debugger=DEBUG)
 else:
-    os.system("gunicorn -w 10 -b 0.0.0.0:" + str(PORT) + " goosepaper:app --daemon --access-logfile ./logs/access_log --error-log ./logs/error_log --debug --pid ./daemon.pid")
+    print "Starting a gunicorn server"
+    os.system("gunicorn -w %d -b 0.0.0.0:%d goosepaper:app --daemon --access-logfile ./logs/access_log --error-log ./logs/error_log --debug --pid ./daemon.pid" % (NUMBER_OF_WORKERS, PORT))
+    print "Done"
+

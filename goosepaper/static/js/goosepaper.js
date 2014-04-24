@@ -1,17 +1,15 @@
 // Capture an enter event
-(function($) {
-    $.fn.onEnter = function(func) {
-        this.bind('keypress', function(e) {
-            if (e.keyCode == 13) {
-                func.apply(this, [e]);
-            }
-        });
-        return this;
-     };
-})(jQuery);
+jQuery.fn.onEnter = function(func) {
+    this.bind('keypress', function(e) {
+        if (e.keyCode == 13) {
+            func.apply(this, [e]);
+        }
+    });
+    return this;
+ }
 
 // Replace one class with another
-jQuery.fn.replaceClass = function(toReplace,replaceWith){
+jQuery.fn.replaceClass = function(toReplace,replaceWith) {
     return $(this).each(function(){
         return $(this).removeClass(toReplace).addClass(replaceWith);
     });
@@ -56,8 +54,19 @@ $(function() {
     // Toggle a condensed view
     $('h2 a.glyphicon-list').click(function() {
         $('.fold').toggle();
-        $.cookie('collapse') ? $.removeCookie('collapse') : $.cookie('collapse', true);
-        $(this).toggleClass('folded-icon');
+        $(this).toggleClass('red');
+        $.cookie('fold') ? $.removeCookie('fold') : $.cookie('fold', true);
+
+        // Set overflow properties... looks like shit on mobile
+        // if ($.cookie('fold')) {
+        //     $.removeCookie('fold');
+        //     $('header h3').css('white-space', 'wrap');
+        //     $('header h3').css('overflow', 'auto');
+        // } else {
+        //     $.cookie('fold', true);
+        //     $('header h3').css('white-space', 'nowrap');
+        //     $('header h3').css('overflow', 'hidden');
+        // }
     });
 
     // Infinite scroll the page
@@ -75,7 +84,7 @@ $(function() {
 
     // Un/favorite an article
     $('#content').on('click', '.favorite', function() {
-        var id = $(this).closest('article').attr('id');
+        var id = $(this).attr('article-id');
 
         // Set the HTTP verb and adjust display of button
         var verb = 'POST';
@@ -109,12 +118,16 @@ $(function() {
             url: '/',
             type: 'POST',
             headers: {'article': $(this).val()},
+            beforeSend: function() {
+                $('header h1').text('extracting...');
+            },
             statusCode: {
                 200: function() {
                     $('header h1').text('reloading...');
                     location.reload();
                 },
                 400: function() {
+                    $('header h1').text('error :(');
                     $('#articlebox')
                         .val('')
                         .prop('disabled', false)

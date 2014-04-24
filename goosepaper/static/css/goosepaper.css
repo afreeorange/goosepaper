@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic|Buenard:400,700|Lusitana:400,700);
 h1 {
     letter-spacing: -1px;
     font-weight: bold;
@@ -6,7 +7,22 @@ h2 a span {
     display: none;
 }
 h2 a, h2 span {
-    margin-right: 10px;
+    color: #999;
+    margin: 0 10px 0 0;
+}
+h2 a:hover {
+    color: #333;
+}
+.big-right {
+    text-align: left;
+}
+@media only screen and (min-width : 768px) {
+    h2 a, h2 span {
+        margin: 0 0 0 10px;
+    }
+    .big-right {
+        text-align: right;
+    }
 }
 h1 a:hover,
 h2 a:hover,
@@ -14,36 +30,29 @@ h3 a:hover,
 h4 a:hover {
     text-decoration: none;
 }
-h4,
-h4 a {
-    color: #666;
-}
-h4 a:hover {
-    color: #333;
+time {
+    color: #CCC;
+    margin-right: 15px;
 }
 #articlebox,
-#searchbox {
+#searchbox,
+.hide {
     display: none;
 }
 .right {
     text-align: right;
 }
-hr {
-    padding: 0;
-    margin: 0;
+.options {
+    color: #999;
+    font-size: x-large;
+    padding-top: 18px;
 }
 .options a {
-    margin-right: 10px;
-    text-decoration: none;
-}
-.delete {
     color: #999;
 }
-.delete:hover {
-    color: #666;
-}
-.favorite {
+.options .glyphicon:hover {
     cursor: pointer;
+    color: #333;
 }
 .gray {
     color: #999;
@@ -51,9 +60,9 @@ hr {
 .red {
     color: #FF3300!important;
 }
-time {
-    color: #999;
-    margin-right: 10px;
+.red:hover {
+    color: #FF0000!important;
+    cursor: pointer;
 }
 #infscr-loading {
     margin: 20px auto;
@@ -63,10 +72,17 @@ time {
     display: none;
 }
 footer {
-    padding: 40px 0;
+    padding: 20px 0;
 }
-.folded-icon {
-    color: #FF3300;
+.results-count {
+    background-color: #CCC;
+    color: #FFF;
+    padding: 0 5px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -o-border-radius: 10px;
+    -ms-border-radius: 10px;
+    border-radius: 10px;
 }
 .highlight {
     background-color: #FFFF88;
@@ -77,4 +93,16 @@ footer {
     -o-border-radius: 4px;
     -ms-border-radius: 4px;
     border-radius: 4px;
+}
+article {
+    border-bottom: 1px dotted #CCC;
+}
+.external-link {
+    color: #CCC;
+}
+.external-link:hover {
+    color: #999;
+    text-decoration: none;
+}
+.article-text {
 }

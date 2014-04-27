@@ -10,7 +10,7 @@
                 goosepaper
                 {%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
                 {%- if request.endpoint == 'search' %}
-                <span class="badge">
+                <span class="results-count">
                     {{ paginator.total }}
                 </span>
                 {%- endif -%}
@@ -67,7 +67,7 @@
                 {%- endif %}"><span>Favorite article</span></a>
 
                 {%- if request.endpoint == 'archive' %}
-                <a href="javascript://" title="Restore" class="archive glyphicon glyphicon-file" article-id="{{ article.id }}"><span>Restore</span></a>
+                <a href="javascript://" title="Restore" class="archive restore glyphicon glyphicon-file" article-id="{{ article.id }}"><span>Restore</span></a>
                 {%- else %}
                 <a href="javascript://" title="Add to archive" class="archive glyphicon glyphicon-folder-close{%- if request.endpoint == 'favorites' %} white{% endif %}" article-id="{{ article.id }}"><span>Add to archive</span></a>
 

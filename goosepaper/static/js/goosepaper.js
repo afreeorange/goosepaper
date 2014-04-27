@@ -30,6 +30,7 @@ $(function() {
     var search_term = get_url_param('highlight');
     if (search_term) {
         $('#content').highlight(search_term);
+        $.scrollTo($('.highlight'), 800);
     };
 
     // Show/hide the search
@@ -118,12 +119,9 @@ $(function() {
 
         // Set the HTTP verb and adjust display of button
         var verb = 'POST';
-        if ($(this).hasClass('on')) {
+        if ($(this).hasClass('on') || $(this).hasClass('restore')) {
             $(this).removeClass('on'); 
-            var verb = 'DELETE';
-        }
-        else {
-            $(this).addClass('on');
+            verb = 'DELETE';
         };
 
         // Try an HTTP request

@@ -5,6 +5,7 @@ h1 {
 h2 a, h2 span {
     color: #999;
     margin: 0 10px 0 0;
+    font-size: x-large;
 }
 h2 a:hover {
     color: #333;
@@ -16,21 +17,12 @@ h3 {
 .big-right {
     text-align: left;
 }
+.right {
+    text-align: left;
+}
 .wrap-title {
     white-space: wrap;
     overflow: auto;
-}
-@media only screen and (min-width : 768px) {
-    h2 a, h2 span {
-        margin: 0 0 0 10px;
-    }
-    .wrap-title {
-        white-space: nowrap;
-        overflow: hidden;
-    }
-    .big-right {
-        text-align: right;
-    }
 }
 h1 a:hover,
 h2 a:hover,
@@ -48,29 +40,32 @@ h2 a span,
 .hide {
     display: none;
 }
-.right {
-    text-align: right;
+#articlebox,
+#searchbox {
+    margin-bottom: 10px;
 }
 .options {
-    color: #999;
+    color: #CCC;
     font-size: x-large;
     padding-top: 8px;
 }
 .options a {
-    color: #999;
+    color: #CCC;
+    margin-right: 10px;
+    margin-left: 0;
 }
 .options a:hover {
     color: #333;
     text-decoration: none;
     cursor: pointer;
 }
-.gray {
+.off {
     color: #999;
 }
-.red {
+.on {
     color: #FF3300!important;
 }
-.red:hover {
+.on:hover {
     color: #FF0000!important;
 }
 #infscr-loading {
@@ -82,11 +77,11 @@ h2 a span,
 }
 footer {
     border-top: 1px dotted #CCC;
-    margin: 20px 0;
     padding: 20px 0;
 }
 .results-count {
-    background-color: #CCC;
+    letter-spacing: 0px;
+    background-color: #FF3300;
     color: #FFF;
     padding: 0 5px;
     -moz-border-radius: 10px;
@@ -105,8 +100,8 @@ footer {
     -ms-border-radius: 4px;
     border-radius: 4px;
 }
-article {
-    border-top: 1px dotted #CCC;
+.dotted-top {
+    border-top: 1px dotted #CCC;   
 }
 .external-link {
     color: #CCC;
@@ -115,5 +110,26 @@ article {
     color: #999;
     text-decoration: none;
 }
-.article-text {
+@media only screen and (min-width : 768px) {
+    h2 a, h2 span {
+        margin: 0 0 0 8px;
+    }
+    .wrap-title {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .big-right {
+        text-align: right;
+    }
+    .right {
+        text-align: right;
+    }
+    .options a {
+        color: #CCC;
+        margin-left: 10px;
+        margin-right: 0;
+    }
+}
+.white, .white a {
+    color: #FFF!important;
 }

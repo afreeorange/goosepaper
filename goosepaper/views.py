@@ -18,6 +18,30 @@ from goosepaper.models import SavedArticle
 from mongoengine import Q
 
 
+@app.route('/archive/page/<int:number>')
+@app.route('/archive/page')
+@app.route('/archive', methods=['POST', 'DELETE', 'GET'])
+def archive(number=1):
+    """ Manage archive """
+    if request.method == 'GET':
+        paginator = Pagination(SavedArticle.objects(archived=True).order_by('-sent'), 
+                               number, 
+                               app.config['ARTICLES_PER_PAGE'])
+        return render_template('list.html', paginator=paginator)
+
+    # Get the ID. Abort if not supplied in headers.
+    if 'Id' not in request.headers:
+        log.error('article ID not provided for archive')
+        abort(401)
+    id = request.headers['Id'].strip()
+
+    # Set or unset the archive attribute depending on request method
+    action = {'POST': True, 'DELETE': False}
+    SavedArticle.objects.get_or_404(id__exact=id).update(set__archived=action[request.method])
+    log.info('%s %s in archive' % (id, request.method))
+    return "OK\n"
+
+
 @app.route('/favorites/page/<int:number>')
 @app.route('/favorites/page')
 @app.route('/favorites', methods=['POST', 'DELETE', 'GET'])
@@ -91,7 +115,7 @@ def index(number=1):
     """ Save a URI or show some information on how to do so """
     # Display articles if GET-ting a page
     if request.method == 'GET':
-        paginator = Pagination(SavedArticle.objects.order_by('-sent'), 
+        paginator = Pagination(SavedArticle.objects(archived=False).order_by('-sent'), 
                                number, 
                                app.config['ARTICLES_PER_PAGE'])
         return render_template("list.html", paginator=paginator)

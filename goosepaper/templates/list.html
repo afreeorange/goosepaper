@@ -1,55 +1,112 @@
 {% extends "page.html" %}
 {% block title %} Home {% endblock %}
 
-{% block content %}
-    {% for article in paginator.items %}
 
-    <article id="{{ article.id }}">
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>
+                goosepaper
+                {%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
+                {%- if request.endpoint == 'search' %}
+                <span class="badge">
+                    {{ paginator.total }}
+                </span>
+                {%- endif -%}
+            </h1>
+        </div>
+        <div class="col-sm-4 big-right">
+            <h2>
+                <a href="javascript://" data-toggle="tooltip" data-placement="bottom" title="Search" class="glyphicon glyphicon-search{%- if request.endpoint == 'search' %} on{%- endif %}"></a>
+                <a href="javascript://" data-toggle="tooltip" data-placement="bottom" title="Condense List" class="glyphicon glyphicon-align-justify{% if request.cookies.get('fold') %} on{% endif %}"><span>Condense list</span></a>
+
+                {%- if request.endpoint == 'favorites' %} 
+                <span class="glyphicon glyphicon-heart on"></span>
+                {% else %}
+                <a href="/favorites" data-toggle="tooltip" data-placement="bottom" title="Favorites" class="glyphicon glyphicon-heart"><span>View favorited articles</span></a>
+                {%- endif %}
+                <a href="/archive" data-toggle="tooltip" data-placement="bottom" title="Archive" class="glyphicon glyphicon-folder-close{%- if request.endpoint == 'archive' %} on{%- endif %}"><span>View archive</span></a>
+
+                {%- if request.endpoint == 'index' %}
+                <a href="javascript://" data-toggle="tooltip" data-placement="bottom"  title="Add" class="glyphicon glyphicon-plus"><span>Add article</span></a>
+                {% else %}
+                <a href="/" title="Home" class="glyphicon glyphicon-home"><span>Home</span></a>
+                {%- endif -%}
+            </h2>
+        </div>
+    </div>
+
+    {# Search and Add Article boxes #}
+    <div class="row">
+        <div class="col-sm-12">
+            {%- if request.endpoint == 'index' %}
+            <input type="text" class="form-control" id="articlebox" placeholder="add a URL then hit return" />
+            {%- endif %}
+            <input type="text" class="form-control" id="searchbox"  placeholder="type something and hit return" {%- if request.endpoint == 'search' %}style="display:block;" value="{{ term }}"{%- endif %} />
+        </div>
+    </div>
+
+    {# List of articles #}
+    {% for article in paginator.items %}
+    <article id="{{ article.id }}" class="dotted-top">
 
         <div class="row">
-            <div class="col-xs-10">
+            <div class="col-sm-9">
                 <header>
                     <h3{% if request.cookies.get('fold') %} class="wrap-title"{% endif %}>
                         <a href="/articles/{{ article.id }}{%- if request.endpoint == 'search' %}?highlight={{ term }}{%- endif %}" title="Permanent link to article">{{ article.title }}</a>
                     </h3>
                 </header>
             </div>
-            <div class="col-xs-1 options right">
-                <a href="javascript://" class="delete glyphicon glyphicon-trash" article-id="{{ article.id }}"><span>Remove article</span></a>
-            </div>
-            <div class="col-xs-1 options right">
+            <div class="col-sm-3 options right">
                 <a article-id="{{ article.id }}" class="favorite glyphicon {% if article.favorite -%}
-                red glyphicon-heart
+                on glyphicon-heart
                 {%- else -%}
-                gray glyphicon-heart-empty
+                off glyphicon-heart-empty
                 {%- endif %}"><span>Favorite article</span></a>
+
+                {%- if request.endpoint == 'archive' %}
+                <a href="javascript://" title="Restore" class="archive glyphicon glyphicon-file" article-id="{{ article.id }}"><span>Restore</span></a>
+                {%- else %}
+                <a href="javascript://" title="Add to archive" class="archive glyphicon glyphicon-folder-close{%- if request.endpoint == 'favorites' %} white{% endif %}" article-id="{{ article.id }}"><span>Add to archive</span></a>
+
+                {%- endif %}
+
+                <a href="javascript://" class="delete glyphicon glyphicon-trash" article-id="{{ article.id }}"><span>Remove article</span></a>
             </div>
         </div> {# End row #}
 
         <div class="row fold{% if request.cookies.get('fold') %} folded{% endif %}">
-            <div class="col-xs-12">
+            <div class="col-sm-12">
                 <p>{{ article.summary }}&hellip;</p>
                 <div class="row small">
-                    <div class="col-xs-6">
+                    <div class="col-sm-6">
                         <p><time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
                     </div>
-                    <div class="col-xs-6 right">
+                    <div class="col-sm-6 right">
                         <p><a href="{{ article.url }}" title="{{ article.title }}" class="external-link">{{ article.domain }} <span class="glyphicon glyphicon-share-alt"></span></a></p>
                     </div>                    
                 </div>
-            </div> {# End col-xs-12 #}
+            </div> {# End col-sm-12 #}
         </div> {# End row #}
 
     </article>
     {% endfor %}
 
-    <nav>
-        {%- if request.endpoint == 'search' %}
-        <a href="/search/{{ term }}/page/{{ paginator.page + 1 }}"></a>
-        {%- elif request.endpoint == 'favorites' %}
-        <a href="/favorites/page/{{ paginator.page + 1 }}"></a>
-        {%- else %}
-        <a href="/page/{{ paginator.page + 1 }}"></a>
-        {%- endif %}
-    </nav>
+{% endblock %}
+
+
+{% block navigation %}
+
+    {%- if request.endpoint == 'search' %}
+    <a href="/search/{{ term }}/page/{{ paginator.page + 1 }}"></a>
+    {%- elif request.endpoint == 'favorites' %}
+    <a href="/favorites/page/{{ paginator.page + 1 }}"></a>
+    {%- elif request.endpoint == 'archive' %}
+    <a href="/archive/page/{{ paginator.page + 1 }}"></a>
+    {%- else %}
+    <a href="/page/{{ paginator.page + 1 }}"></a>
+    {%- endif %}
+
 {% endblock %}

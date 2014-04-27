@@ -13,6 +13,7 @@ class SavedArticle(db.Document):
     authors = db.ListField(required=False)
     summary = db.StringField(required=False)
     favorite = db.BooleanField(required=False, default=False)
+    archived = db.BooleanField(required=False, default=False)
     meta = {
         'indexes': ['title', 'domain', 'summary', 'authors']
     }

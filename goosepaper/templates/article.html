@@ -5,25 +5,31 @@
 
     <article>
         <div class="row">
-            <div class="col-xs-10">
+            <div class="col-sm-9">
                 <header>
-                    <h3{% if request.cookies.get('fold') %} class="wrap-title"{% endif %}>
+                    <h1>
                         {{ article.title }}
-                    </h3>
+                    </h1>
                 </header>
             </div>
-            <div class="col-xs-1 options right">
-                <a href="javascript://" class="delete-article glyphicon glyphicon-trash" article-id="{{ article.id }}"><span>Remove article</span></a>
+            <div class="col-sm-3 big-right">
+                <h2 class="options right">
+                    <a href="/" title="Home" class="glyphicon glyphicon-home"><span>Home</span></a>
+                    <a article-id="{{ article.id }}" class="favorite glyphicon {% if article.favorite -%}
+                    on glyphicon-heart
+                    {%- else -%}
+                    off glyphicon-heart-empty
+                    {%- endif %}"><span>Favorite article</span></a>
+                    <a href="javascript://" title="Add to archive" article-id="{{ article.id }}" class="archive glyphicon {% if article.archived -%}
+                    on 
+                    {%- else -%}
+                    off 
+                    {%- endif %}
+                    glyphicon-folder-close"><span>Add to archive</span></a>
+                    <a href="javascript://" class="delete-article glyphicon glyphicon-trash" article-id="{{ article.id }}"><span>Remove article</span></a>
+                </h2>
             </div>
-            <div class="col-xs-1 options right">
-                <a article-id="{{ article.id }}" class="favorite glyphicon {% if article.favorite -%}
-                red glyphicon-heart
-                {%- else -%}
-                gray glyphicon-heart-empty
-                {%- endif %}"><span>Favorite article</span></a>
-            </div>
-        </div> {# End row #}
-
+        </div>
         <div class="row">
             <div class="col-xs-6">
                 <p><time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
@@ -32,7 +38,6 @@
                 <p><a href="{{ article.url }}" title="{{ article.title }}" class="external-link">{{ article.domain }} <span class="glyphicon glyphicon-share-alt"></span></a></p>
             </div>                    
         </div>
-
         <div class="article-text">
         {{ article.body|safe }}
         </div>

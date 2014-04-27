@@ -7,13 +7,17 @@
     <div class="row">
         <div class="col-sm-8">
             <h1>
-                goosepaper
+                goosepaper 
                 {%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
                 {%- if request.endpoint == 'search' %}
-                <span class="results-count">
-                    {{ paginator.total }}
-                </span>
+                <span
+                {% if paginator.total == 0 -%}
+                    class="off">: no results
+                {%- else -%}
+                    class="results-count">{{ paginator.total }}
                 {%- endif -%}
+                </span>
+                {%- endif %}
             </h1>
         </div>
         <div class="col-sm-4 big-right">

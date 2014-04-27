@@ -5,10 +5,8 @@ if [[ ! -e ./daemon.pid ]]; then
     exit
 fi
 
-echo -e "Killing all workers"
-
 DAEMON_PID=$(cat ./daemon.pid)
-echo -ne "Stopping master with PID $DAEMON_PID"
+echo -ne "Stopping master with PID $DAEMON_PID "
 kill -9 $DAEMON_PID
 rm ./daemon.pid
 pkill -9 goosepaper:app

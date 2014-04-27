@@ -122,6 +122,8 @@ $(function() {
         if ($(this).hasClass('on') || $(this).hasClass('restore')) {
             $(this).removeClass('on'); 
             verb = 'DELETE';
+        } else {
+            $(this).addClass('on'); 
         };
 
         // Try an HTTP request

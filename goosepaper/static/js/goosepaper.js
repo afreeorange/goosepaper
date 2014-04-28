@@ -24,8 +24,10 @@ function get_url_param(key){
 
 $(function() {
 
-    // Show tooltips
-    $("[data-toggle=tooltip]").tooltip();
+    // Show tooltips only for non-touchscreen devices
+    if (!Modernizr.touch) {   
+        $("[data-toggle=tooltip]").tooltip();
+    }
 
     var search_term = get_url_param('highlight');
     if (search_term) {
@@ -89,7 +91,7 @@ $(function() {
         var id = $(this).attr('article-id');
 
         // Set the HTTP verb and adjust display of button
-        var verb = 'POST';
+        var verb = 'PUT';
         if ($(this).hasClass('on')) {
             $(this).replaceClass('on', 'off'); 
             $(this).replaceClass('glyphicon-heart', 'glyphicon-heart-empty');
@@ -109,7 +111,7 @@ $(function() {
 
         // Remove unfavorited items from view on favorites
         if ($(this).hasClass('slideparent')) {
-            $('#' + id).closest('.row').slideUp();
+            $('#' + id).slideUp();
         };
     });
 
@@ -118,7 +120,7 @@ $(function() {
         var id = $(this).attr('article-id');
 
         // Set the HTTP verb and adjust display of button
-        var verb = 'POST';
+        var verb = 'PUT';
         if ($(this).hasClass('on') || $(this).hasClass('restore')) {
             $(this).removeClass('on'); 
             verb = 'DELETE';
@@ -148,7 +150,7 @@ $(function() {
                 $('header h1').text('extracting...');
             },
             statusCode: {
-                200: function() {
+                201: function() {
                     $('header h1').text('reloading...');
                     location.reload();
                 },

@@ -11,6 +11,7 @@ WTForms==1.0.5
 Werkzeug==0.8.3
 argparse==1.2.1
 arrow==0.4.2
+beautifulsoup4==4.3.2
 cssmin==0.2.0
 cssselect==0.9.1
 docopt==0.6.1

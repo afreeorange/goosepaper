@@ -14,11 +14,12 @@ if len(sys.argv) != 2:
 
 soup = BeautifulSoup(open(sys.argv[1]))
 for link in soup.select('ol > li > a'):
-    print "Trying", link.get('href')[:79], "..."
-    
-    r = requests.post(API_HOST, headers={'Article': link.get('href')})
-    
-    if r.status_code != 200:
-        print "Error!"
-    else:
-        print 'OK'
+    print link.get('href')
+    #print "Trying", link.get('href')[:79], "..."
+    #
+    #r = requests.post(API_HOST, headers={'Article': link.get('href')})
+    #
+    #if r.status_code != 200:
+    #    print "Error!"
+    #else:
+    #    print 'OK'

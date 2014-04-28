@@ -68,30 +68,35 @@
                 on glyphicon-heart
                 {%- else -%}
                 off glyphicon-heart-empty
-                {%- endif %}"><span>Favorite article</span></a>
+                {%- endif -%} 
+                {%- if request.endpoint == 'favorites' %} slideparent{%- endif -%}
+                "><span>Favorite article</span></a>
 
                 {%- if request.endpoint == 'archive' %}
                 <a href="javascript://" title="Restore" class="archive restore glyphicon glyphicon-file" article-id="{{ article.id }}"><span>Restore</span></a>
                 {%- else %}
                 <a href="javascript://" title="Add to archive" class="archive glyphicon glyphicon-folder-close{%- if request.endpoint == 'favorites' %} white{% endif %}" article-id="{{ article.id }}"><span>Add to archive</span></a>
-
                 {%- endif %}
 
                 <a href="javascript://" class="delete glyphicon glyphicon-trash" article-id="{{ article.id }}"><span>Remove article</span></a>
             </div>
         </div> {# End row #}
 
+        {# Article Summary #}
         <div class="row fold{% if request.cookies.get('fold') %} folded{% endif %}">
             <div class="col-sm-12">
-                <p>{{ article.summary }}&hellip;</p>
-                <div class="row small">
+                <p class="article-text">{{ article.summary }}&hellip;</p>
+
+                {# Time and URL information #}
+                <div class="row">
                     <div class="col-sm-6">
                         <p><time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
                     </div>
                     <div class="col-sm-6 right">
                         <p><a href="{{ article.url }}" title="{{ article.title }}" class="external-link">{{ article.domain }} <span class="glyphicon glyphicon-share-alt"></span></a></p>
-                    </div>                    
+                    </div>
                 </div>
+
             </div> {# End col-sm-12 #}
         </div> {# End row #}
 

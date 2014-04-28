@@ -20,7 +20,7 @@ from mongoengine import Q
 
 @app.route('/archive/page/<int:number>')
 @app.route('/archive/page')
-@app.route('/archive', methods=['POST', 'DELETE', 'GET'])
+@app.route('/archive', methods=['PUT', 'DELETE', 'GET'])
 def archive(number=1):
     """ Manage archive """
     if request.method == 'GET':
@@ -36,15 +36,15 @@ def archive(number=1):
     id = request.headers['Id'].strip()
 
     # Set or unset the archive attribute depending on request method
-    action = {'POST': True, 'DELETE': False}
+    action = {'PUT': True, 'DELETE': False}
     SavedArticle.objects.get_or_404(id__exact=id).update(set__archived=action[request.method])
     log.info('%s %s in archive' % (id, request.method))
-    return "OK\n"
+    return '200', 200
 
 
 @app.route('/favorites/page/<int:number>')
 @app.route('/favorites/page')
-@app.route('/favorites', methods=['POST', 'DELETE', 'GET'])
+@app.route('/favorites', methods=['PUT', 'DELETE', 'GET'])
 def favorites(number=1):
     """ Manage favorites """
     if request.method == 'GET':
@@ -60,10 +60,10 @@ def favorites(number=1):
     id = request.headers['Id'].strip()
 
     # Set or unset the favorites attribute depending on request method
-    action = {'POST': True, 'DELETE': False}
+    action = {'PUT': True, 'DELETE': False}
     SavedArticle.objects.get_or_404(id__exact=id).update(set__favorite=action[request.method])
     log.info('%s %s in favorites' % (id, request.method))
-    return "OK\n"
+    return "200", 200
 
 
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])
@@ -78,7 +78,7 @@ def article(id=None):
         try:
             article.delete()
         except Exception, e:
-            abort(500)
+            return '400', abort(500)
         else:
             log.info('%s deleted' % id)
     return "Removed"
@@ -110,7 +110,7 @@ def search(term, number=1):
 @app.route('/page/<int:number>')
 @app.route('/articles')
 @app.route('/index')
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST', 'GET'])
 def index(number=1):
     """ Save a URI or show some information on how to do so """
     # Display articles if GET-ting a page
@@ -130,13 +130,12 @@ def index(number=1):
     article = extract(url)
     saved_article = save_article(article)
     if not saved_article:
-        abort(400)
+        return '400', 400
 
-    return "OK"
+    return jsonify(saved_article), 201
 
 
 @app.route('/favicon.png')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static/img'),
                                'favicon.png')
-

@@ -1,3 +1,10 @@
+@import url(http://fonts.googleapis.com/css?family=Vollkorn:400italic,700italic,400,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+.article-text {
+    font-family: Vollkorn, georgia, "times new roman", serif;
+    font-size: 1.15em;
+}
 h1 {
     letter-spacing: -1px;
     font-weight: bold;
@@ -110,6 +117,9 @@ footer {
     color: #999;
     text-decoration: none;
 }
+.white, .white a {
+    display: none;
+}
 @media only screen and (min-width : 768px) {
     h2 a, h2 span {
         margin: 0 0 0 8px;
@@ -129,7 +139,9 @@ footer {
         margin-left: 10px;
         margin-right: 0;
     }
+    .white, .white a {
+        display: inline;
+        color: #FFF!important;
+    }
 }
-.white, .white a {
-    color: #FFF!important;
-}
+

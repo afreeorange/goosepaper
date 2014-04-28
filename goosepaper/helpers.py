@@ -47,7 +47,7 @@ def save_article(article):
     else:
         log.info('%s saved from %s' % (str(a.id), article.url))
         return {
-            'id': a.id,
+            'id': str(a.id),
             'title': a.title,
             'summary': a.summary,
             'domain': a.domain

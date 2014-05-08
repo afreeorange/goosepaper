@@ -5,11 +5,9 @@ Flask-Script==0.6.7
 Flask-WTF==0.9.5
 Jinja2==2.6
 Logbook==0.6.0
-Pillow==2.4.0
 PyYAML==3.11
 WTForms==1.0.5
 Werkzeug==0.8.3
-argparse==1.2.1
 arrow==0.4.2
 beautifulsoup4==4.3.2
 cssmin==0.2.0
@@ -19,7 +17,6 @@ docopts==0.6.1-fix2
 flask-mongoengine==0.7.0
 goose-extractor==1.0.8
 gunicorn==0.17.3
-humanize==0.5
 jieba==0.32
 jsmin==2.0.9
 lockfile==0.9.1

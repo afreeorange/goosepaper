@@ -27,6 +27,7 @@ $(function() {
     // Show tooltips only for non-touchscreen devices
     if (!Modernizr.touch) {   
         $("[data-toggle=tooltip]").tooltip();
+        $("[data-toggle=popover]").popover();
     }
 
     var search_term = get_url_param('highlight');
@@ -88,7 +89,7 @@ $(function() {
 
     // Un/favorite an article
     $('#content').on('click', '.favorite', function() {
-        var id = $(this).attr('article-id');
+        var id = $(this).closest('article').attr('id');
 
         // Set the HTTP verb and adjust display of button
         var verb = 'PUT';
@@ -117,7 +118,7 @@ $(function() {
 
     // Add or remove from archive
     $('#content').on('click', '.archive', function() {
-        var id = $(this).attr('article-id');
+        var id = $(this).closest('article').attr('id');
 
         // Set the HTTP verb and adjust display of button
         var verb = 'PUT';
@@ -169,10 +170,31 @@ $(function() {
     $('#searchbox').onEnter(function(e) {
         location.replace('/search/' + $(this).val());
     });
+ 
+    // Close all other popovers
+    // http://jsfiddle.net/mattdlockyer/C5GBU/2/
+    $('body').on('click', function (e) {
+        $('[data-toggle="popover"]').each(function () {
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
 
-    // Delete an article on list
+    // Delete articles with confirmation
     $('#content').on('click', '.delete', function(e) {
-        var id = $(this).attr('article-id');
+        // var id = $(this).closest('article').attr('id');
+        // $('#delete-' + id).popover('hide');
+    });
+
+    $('#content').on('click', '.delete-cancel', function(e) {
+        var id = $(this).closest('article').attr('id');
+        $('#delete-' + id).popover('hide');
+    });
+
+    $('#content').on('click', '.delete-confirm', function(e) {
+        var id = $(this).closest('article').attr('id');
+        $('#delete-' + id).popover('hide');
         $.ajax({
             url: '/articles/' + id,
             type: 'DELETE',

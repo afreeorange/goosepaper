@@ -2,7 +2,7 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
 @import url(http://fonts.googleapis.com/css?family=Inconsolata);
 .article-text {
-    font-family: Vollkorn, georgia, "times new roman", serif;
+    /*font-family: Vollkorn, georgia, "times new roman", serif;*/
     font-size: 1.15em;
 }
 h1 {
@@ -117,6 +117,9 @@ footer {
     color: #999;
     text-decoration: none;
 }
+.red {
+    color: #FF3300;
+}
 .white, .white a {
     display: none;
 }
@@ -144,4 +147,3 @@ footer {
         color: #FFF!important;
     }
 }
-

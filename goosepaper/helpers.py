@@ -1,9 +1,10 @@
 from datetime import datetime
 
+import arrow
 from goose import Goose
-from newspaper import Article
 from goosepaper import app, db, log
 from goosepaper.models import SavedArticle
+from newspaper import Article
 
 
 def extract(url=None, keep_html=True):
@@ -12,12 +13,12 @@ def extract(url=None, keep_html=True):
     try:
         a.download()
     except Exception, e:
-        log.error('Error extracting %s: %s' % (url, str(e)))
+        log.error('Error downloading %s: %s' % (url, str(e)))
     else:
         try:
             a.parse()
         except Exception, e:
-            log.error('Error extracting %s: %s' % (url, str(e)))
+            log.error('Error parsing %s: %s' % (url, str(e)))
             return False
         else:
             log.info('Extracted %s' % url)
@@ -29,34 +30,39 @@ def save_article(article):
 
     # Check if document exists. If it does, simply update the save date.
     if SavedArticle.objects(url__exact=article.url):
-        SavedArticle.objects.get(url__exact=article.url).update(set__sent=str(datetime.now()))
-        return True
+        a = SavedArticle.objects.get(url__exact=article.url)
+        a.update(set__sent=str(arrow.now()))
+        log.info('%s has updated timestamp' % str(a.id))
 
     # Else, insert record
-    try:
-        a = SavedArticle(title=article.title,
-                         sent=str(datetime.now()),
-                         url=article.url,
-                         body=article.article_html,
-                         authors=article.authors,
-                         domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
-                         summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
-    except Exception, e:
-        log.error('Error saving article: %s' % str(e))
-        return {}
     else:
-        log.info('%s saved from %s' % (str(a.id), article.url))
-        return {
-            'id': str(a.id),
-            'title': a.title,
-            'summary': a.summary,
-            'domain': a.domain
-        }
+        try:
+            a = SavedArticle(title=article.title,
+                             sent=str(arrow.now()),
+                             url=article.url,
+                             body=article.article_html,
+                             body_plain=article.text,
+                             authors=article.authors,
+                             domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
+                             summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
+        except Exception, e:
+            log.error('Error saving article: %s' % str(e))
+            return {}
+        else:
+            log.info('%s saved from %s' % (str(a.id), article.url))
+
+    # Return a small JSON representation of article
+    return {
+        'id': str(a.id),
+        'title': a.title,
+        'summary': a.summary,
+        'domain': a.domain
+    }
 
 
 def cli_save(url):
     """ Helper for CLI scripts """
-    # Attempt to extract article
+
     article = extract(url)
     if not article:
         print "Error extracting URL"

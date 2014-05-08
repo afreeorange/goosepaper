@@ -12,6 +12,7 @@
         <link rel="icon" type="image/png" href="/favicon.png">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css">
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/e9421181788/integration/bootstrap/3/dataTables.bootstrap.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/goosepaper.css') }}">
     </head>
     <body class="container">
@@ -40,6 +41,8 @@
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.cookie.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.highlight.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.scrollTo.js') }}"></script>
+        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10-dev/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/e9421181788/integration/bootstrap/3/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/goosepaper.js') }}"></script>
         {% if self.javascript() -%}
         <script type="text/javascript">

@@ -12,10 +12,9 @@ from settings import *
 # Run flask or gunicorn depending on options
 # Default is gunicorn
 if len(sys.argv) == 2 and sys.argv[1] == "flask":
-    print "Starting development server"
     run_simple(HOST, PORT, routed_app, use_reloader=True, use_debugger=DEBUG)
 else:
-    print "Starting gunicorn master with %d workers" % NUMBER_OF_WORKERS
+    print "Starting Gunicorn master with %d workers" % NUMBER_OF_WORKERS
     os.system("""gunicorn goosepaper:app \
                           --workers %d \
                           --bind 0.0.0.0:%d \
@@ -24,4 +23,3 @@ else:
                           --error-log ./logs/error_log \
                           --pid ./daemon.pid""" % (NUMBER_OF_WORKERS, PORT))
     print "Done"
-

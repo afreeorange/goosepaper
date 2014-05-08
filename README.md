@@ -2,13 +2,21 @@
 
 Being a small [Flask](http://flask.pocoo.org/) application written around the awesome [Newspaper](https://github.com/codelucas/newspaper) module.
 
+Screenshots
+-----------
+
+[![Expanded View of Articles](http://i.imgur.com/HDE9nj8b.jpg)](http://i.imgur.com/HDE9nj8.jpg)
+[![Condensed View of Articles](http://i.imgur.com/dfanttZb.jpg)](http://i.imgur.com/dfanttZ.jpg)
+[![Single Article](http://i.imgur.com/pNdbhTob.jpg)](http://i.imgur.com/pNdbhTo.jpg)
+[![Sample Search](http://i.imgur.com/x4YCxApb.jpg)](http://i.imgur.com/x4YCxAp.jpg)
+
 Installation
 ------------
 
 * Have a MongoDB instance running. Default is `localhost:27017`. Change this in `settings.py`.
 * Run the `install` script, then source `./bin/activate`
 * Run `./start flask` for a dev server.  
-  Running `./start` will start 10 [gunicorn](http://gunicorn.org) workers.
+  Running `./start` will start 10 [Gunicorn](http://gunicorn.org) workers.
 
 Managing Articles
 -----------------
@@ -41,6 +49,19 @@ _Or_, source `bin/activate` and then
 		Nlr5zbrLCgwTOA3ApKKa: 	|"python /path/to/mail.py"
 
 * Send an email to alias with the _subject line_ containing the URL.
+
+To Do
+-----
+
+* Authentication
+* Correct HTTP status codes
+* API
+* Use HTTP data instead of headers for URIs
+* Ability to edit articles
+* Export to HTML and PDF
+* Delete confirmation
+* uWSGI instead of Gunicorn (?)
+* Test/deploy on Heroku
 
 License
 -------

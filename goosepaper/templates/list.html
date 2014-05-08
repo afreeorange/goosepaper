@@ -1,6 +1,12 @@
 {% extends "page.html" %}
 {% block title %} Home {% endblock %}
 
+{% macro delete_popup(article_id) %}
+<div class='btn-group'>
+    <button type='button' class='btn btn-default delete-confirm'><span class='glyphicon glyphicon-ok'></span></button>
+    <button type='button' class='btn btn-default delete-cancel'> <span class='glyphicon glyphicon-remove'></span></button>
+</div>
+{% endmacro %}
 
 {% block content %}
 
@@ -64,7 +70,7 @@
                 </header>
             </div>
             <div class="col-sm-3 options right">
-                <a article-id="{{ article.id }}" class="favorite glyphicon {% if article.favorite -%}
+                <a class="favorite glyphicon {% if article.favorite -%}
                 on glyphicon-heart
                 {%- else -%}
                 off glyphicon-heart-empty
@@ -73,12 +79,12 @@
                 "><span>Favorite article</span></a>
 
                 {%- if request.endpoint == 'archive' %}
-                <a href="javascript://" title="Restore" class="archive restore glyphicon glyphicon-file" article-id="{{ article.id }}"><span>Restore</span></a>
+                <a href="javascript://" title="Restore" class="archive restore glyphicon glyphicon-file"><span>Restore</span></a>
                 {%- else %}
-                <a href="javascript://" title="Add to archive" class="archive glyphicon glyphicon-folder-close{%- if request.endpoint == 'favorites' %} white{% endif %}" article-id="{{ article.id }}"><span>Add to archive</span></a>
+                <a href="javascript://" title="Add to archive" class="archive glyphicon glyphicon-folder-close{%- if request.endpoint == 'favorites' %} white{% endif %}"><span>Add to archive</span></a>
                 {%- endif %}
 
-                <a href="javascript://" class="delete glyphicon glyphicon-trash" article-id="{{ article.id }}"><span>Remove article</span></a>
+                <a href="javascript://" class="delete glyphicon glyphicon-trash" id="delete-{{ article.id }}" data-html="true" data-toggle="popover" data-placement="left" data-content="{{ delete_popup(article.id) }}"><span>Remove article</span></a>
             </div>
         </div> {# End row #}
 
@@ -90,7 +96,7 @@
                 {# Time and URL information #}
                 <div class="row">
                     <div class="col-sm-6">
-                        <p><time><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_datestamp }}</time></p>
+                        <p><time datetime="{{ article.sent|iso_timestamp }}"><span class="glyphicon glyphicon-time"></span> {{ article.sent|humanized_timestamp }}</time></p>
                     </div>
                     <div class="col-sm-6 right">
                         <p><a href="{{ article.url }}" title="{{ article.title }}" class="external-link">{{ article.domain }} <span class="glyphicon glyphicon-share-alt"></span></a></p>

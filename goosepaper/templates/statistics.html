@@ -1,0 +1,85 @@
+{% extends "page.html" %}
+{% block title %} Statistics {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>
+                goosepaper 
+                {%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
+                {%- if request.endpoint == 'search' %}
+                <span
+                {% if paginator.total == 0 -%}
+                    class="off">: no results
+                {%- else -%}
+                    class="results-count">{{ paginator.total }}
+                {%- endif -%}
+                </span>
+                {%- endif %}
+            </h1>
+        </div>
+        <div class="col-sm-4 big-right">
+            <h2>
+                <a href="javascript://" data-toggle="tooltip" data-placement="bottom" title="Search" class="glyphicon glyphicon-search{%- if request.endpoint == 'search' %} on{%- endif %}"></a>
+                <a href="javascript://" data-toggle="tooltip" data-placement="bottom" title="Condense List" class="glyphicon glyphicon-align-justify{% if request.cookies.get('fold') %} on{% endif %}"><span>Condense list</span></a>
+
+                {%- if request.endpoint == 'favorites' %} 
+                <span class="glyphicon glyphicon-heart on"></span>
+                {% else %}
+                <a href="/favorites" data-toggle="tooltip" data-placement="bottom" title="Favorites" class="glyphicon glyphicon-heart"><span>View favorited articles</span></a>
+                {%- endif %}
+                <a href="/archive" data-toggle="tooltip" data-placement="bottom" title="Archive" class="glyphicon glyphicon-folder-close{%- if request.endpoint == 'archive' %} on{%- endif %}"><span>View archive</span></a>
+
+                {%- if request.endpoint == 'index' %}
+                <a href="javascript://" data-toggle="tooltip" data-placement="bottom"  title="Add" class="glyphicon glyphicon-plus"><span>Add article</span></a>
+                {% else %}
+                <a href="/" title="Home" class="glyphicon glyphicon-home"><span>Home</span></a>
+                {%- endif -%}
+            </h2>
+        </div>
+    </div>
+
+    {# Search and Add Article boxes #}
+    <div class="row">
+        <div class="col-sm-12">
+            {%- if request.endpoint == 'index' %}
+            <input type="text" class="form-control" id="articlebox" placeholder="add a URL then hit return" />
+            {%- endif %}
+            <input type="text" class="form-control" id="searchbox"  placeholder="type something and hit return" {%- if request.endpoint == 'search' %}style="display:block;" value="{{ term }}"{%- endif %} />
+        </div>
+    </div>
+
+    <h2>
+        <strong class="red">{{ counts.total }}</strong> total, 
+        <strong class="red">{{ counts.archived }}</strong> in archive, 
+        <strong class="red">{{ counts.favorited }}</strong> favorites
+    </h2>
+
+    <h3><strong class="red">{{ counts.words|number_with_commas }}</strong> words, <strong class="red">{{ counts.domains|length }}</strong> domains</h3>
+
+    <hr />
+
+    <table class="table table-condensed table-striped"></table>
+
+{% endblock %}
+
+{% block javascript %}
+    var domain_data = [
+    {%- for domain in counts.domains -%}
+        ['{{ domain.url }}', {{ domain.value }}],
+    {%- endfor -%} ]
+
+    $('table').dataTable({
+        "data": domain_data,
+        "columns": [
+            {"title": "Domain"},
+            {"title": "Articles"}
+        ],
+        "order": [1, "desc"],
+        "searching": false,
+        "bLengthChange": false,
+        "bInfo" : false,
+        "pagingType": "simple"
+    });
+{% endblock %}

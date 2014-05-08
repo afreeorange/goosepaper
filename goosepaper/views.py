@@ -1,7 +1,7 @@
-from datetime import datetime
 import json
 import os
 
+import arrow
 from flask import (
     abort, 
     Flask, 
@@ -12,9 +12,9 @@ from flask import (
     send_from_directory
 )
 from flask.ext.mongoengine import MongoEngine, Pagination
-from goosepaper import app, log
+from goosepaper import app, log, db
 from goosepaper.helpers import extract, save_article, mongo_object_to_dict
-from goosepaper.models import SavedArticle
+from goosepaper.models import SavedArticle, DomainStatistics, WordStatistics
 from mongoengine import Q
 
 
@@ -32,7 +32,7 @@ def archive(number=1):
     # Get the ID. Abort if not supplied in headers.
     if 'Id' not in request.headers:
         log.error('article ID not provided for archive')
-        abort(401)
+        return '401', 401
     id = request.headers['Id'].strip()
 
     # Set or unset the archive attribute depending on request method
@@ -56,14 +56,14 @@ def favorites(number=1):
     # Get the ID. Abort if not supplied in headers.
     if 'Id' not in request.headers:
         log.error('article ID not provided for favorites')
-        abort(401)
+        return '401', 401
     id = request.headers['Id'].strip()
 
     # Set or unset the favorites attribute depending on request method
     action = {'PUT': True, 'DELETE': False}
     SavedArticle.objects.get_or_404(id__exact=id).update(set__favorite=action[request.method])
     log.info('%s %s in favorites' % (id, request.method))
-    return "200", 200
+    return '200', 200
 
 
 @app.route('/articles/<id>', methods=['GET', 'DELETE'])
@@ -78,10 +78,10 @@ def article(id=None):
         try:
             article.delete()
         except Exception, e:
-            return '400', abort(500)
+            return '500', 500
         else:
             log.info('%s deleted' % id)
-    return "Removed"
+    return 'Removed'
 
 
 @app.route('/search/<string:term>/page/<int:number>')
@@ -89,15 +89,15 @@ def article(id=None):
 def search(term, number=1):
     term = term.strip()
 
-    if len(term) < 4:
-        return jsonify({'error': 'Search term must be longer than 3 characters'})
+    if len(term) < 3:
+        return jsonify({'error': 'Search term must be longer than 2 characters'})
 
     paginator = Pagination(SavedArticle.objects(Q(title__icontains=term)  | 
                                                 Q(domain__icontains=term) | 
                                                 Q(body__icontains=term)).exclude('body').order_by('-sent'), 
                                                 number, 
                                                 app.config['ARTICLES_PER_PAGE'])
-    return render_template("list.html", paginator=paginator, term=term)
+    return render_template('list.html', paginator=paginator, term=term)
 
     # results = []
     # for article in articles:
@@ -107,23 +107,96 @@ def search(term, number=1):
     # return Response(json.dumps(results), mimetype='application/json')
 
 
+@app.route('/export')
+def export():
+    export_list = {
+        'unread': SavedArticle.objects(archived=False),
+        'archived': SavedArticle.objects(archived=True),
+        'favorited': SavedArticle.objects(favorite=True)
+    }
+    return render_template('export.html', list=export_list)
+
+
+@app.route('/api/statistics/words')
+def api_stats_words():
+    map_f = """
+        function() { 
+            var words = this.body_plain.match(/[a-zA-Z]{3,}/g);
+            if (words === null) {
+                return;
+            };
+            for (var i = words.length - 1; i >= 0; i--) {
+                emit(words[i], 1);
+            };
+        }
+    """
+
+    reduce_f = """
+        function(key, values) {
+            return Array.sum(values);
+        }
+    """
+
+    stats = {}
+    # results = list(SavedArticle.objects.map_reduce(map_f, reduce_f, {'merge': 'stats_words'}))
+    
+    for article in WordStatistics.objects().order_by('-word').limit(250):
+        print mongo_object_to_dict(article)
+
+    return jsonify(stats)
+
+
+@app.route('/api/statistics/domains')
+def api_stats_domains():
+    map_f = """
+        function() {
+            emit(this.domain, 1);
+        }
+    """
+
+    reduce_f = """
+        function(key, value) {
+            return Array.sum(value);
+        }
+    """
+
+    stats = {}
+    for result in SavedArticle.objects.map_reduce(map_f, reduce_f, {'merge': 'stats_domain'}):
+        stats[result.key] = result.value
+
+    return jsonify(stats)
+
+
+@app.route('/statistics')
+def statistics():
+    counts = {
+        'total': SavedArticle.objects.count(),
+        'archived': SavedArticle.objects(archived=True).count(),
+        'favorited': SavedArticle.objects(favorite=True).count(),
+        'domains': DomainStatistics.objects().order_by('-value'),
+        'words': WordStatistics.objects.count()
+    }
+    return render_template('statistics.html', counts=counts)
+
+
 @app.route('/page/<int:number>')
 @app.route('/articles')
 @app.route('/index')
 @app.route('/', methods=['POST', 'GET'])
 def index(number=1):
     """ Save a URI or show some information on how to do so """
+
     # Display articles if GET-ting a page
     if request.method == 'GET':
         paginator = Pagination(SavedArticle.objects(archived=False).order_by('-sent'), 
                                number, 
                                app.config['ARTICLES_PER_PAGE'])
-        return render_template("list.html", paginator=paginator)
+        return render_template('list.html', paginator=paginator)
 
     # Only other method allowed at this point is POST. 
     # Check for 'Article' header and get the URL.
     if 'Article' not in request.headers:
-        abort(401)
+        return '401', 401
     url = request.headers['Article'].strip()
 
     # Attempt to extract and save article
@@ -132,7 +205,7 @@ def index(number=1):
     if not saved_article:
         return '400', 400
 
-    return jsonify(saved_article), 201
+    return '201', 201
 
 
 @app.route('/favicon.png')

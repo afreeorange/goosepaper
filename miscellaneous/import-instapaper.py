@@ -1,5 +1,5 @@
 """
-Allows me to import URLs from an HTML file exported from Instapaper
+Import URLs from an HTML file exported from Instapaper
 """
 
 import requests
@@ -13,13 +13,10 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 soup = BeautifulSoup(open(sys.argv[1]))
+
 for link in soup.select('ol > li > a'):
-    print link.get('href')
-    #print "Trying", link.get('href')[:79], "..."
-    #
-    #r = requests.post(API_HOST, headers={'Article': link.get('href')})
-    #
-    #if r.status_code != 200:
-    #    print "Error!"
-    #else:
-    #    print 'OK'
+    print "Trying", link.get('href')[:79], "..."
+    
+    r = requests.post(API_HOST, headers={'Article': link.get('href')})
+
+    print "Error!" if r.status_code != 201 else "OK"

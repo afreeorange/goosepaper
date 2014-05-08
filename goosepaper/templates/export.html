@@ -1,0 +1,32 @@
+{%- macro article_list(category) %}
+    <ol>
+    {% for article in list[category] %}
+        <li>
+            <a href="{{ article.url }}">{{ article.url }}</a>
+        </li>
+    {% endfor %}
+    </ol>
+{% endmacro -%}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Goosepaper Export</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    </head>
+    <body class="container">
+        <h1>List of Articles</h1>
+
+        <h2>Unread</h2>
+        {{ article_list('unread') }}
+
+        <h2>Archived</h2>
+        {{ article_list('archived') }}
+
+        <h2>Favorited</h2>
+        {{ article_list('favorited') }}
+
+        <p><time datetime="{{ iso_timestamp() }}">Exported {{ export_datestamp() }}</time></p>
+    </body>
+</html>

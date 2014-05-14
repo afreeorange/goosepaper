@@ -1,0 +1,28 @@
+{
+  "name": "goosepaper",
+  "version": "0.0.1",
+  "homepage": "https://github.com/afreeorange/goosepaper",
+  "authors": [
+    "Nikhil Anand <mail@nikhil.io>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "jquery-cookie": "~1.4.1",
+    "jquery": "~2.1.1",
+    "jquery-highlight": "~3.2.0",
+    "modernizr": "~2.8.1",
+    "jquery-infinite-scroll": "*",
+    "datatables": "~1.10.0",
+    "datatables-bootstrap3": "*",
+    "jquery.scrollTo": "~1.4.11"
+  }
+}

@@ -1,25 +1,39 @@
-@import url(http://fonts.googleapis.com/css?family=Vollkorn:400italic,700italic,400,700);
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
-@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+@import url(http://fonts.googleapis.com/css?family=Lusitana:400,700);
+
 .article-text {
-    /*font-family: Vollkorn, georgia, "times new roman", serif;*/
-    font-size: 1.15em;
+    color: #333;
+    font-family: Lusitana, georgia, 'times new roman', serif;
+    font-size: 1.2em;
+}
+.article-text a {
+    border-bottom: 1px dotted #ccc;
+    color: #333;
+}
+.article-text a:hover {
+    border-bottom: 1px dotted #999;
+    text-decoration: none;
 }
 h1 {
-    letter-spacing: -1px;
+    font-family: Lusitana, georgia, 'times new roman', serif;
     font-weight: bold;
+    letter-spacing: -1px;
 }
 h2 a, h2 span {
     color: #999;
-    margin: 0 10px 0 0;
     font-size: x-large;
+    margin: 0 10px 0 0;
 }
 h2 a:hover {
     color: #333;
 }
 h3 {
+    font-family: Lusitana, georgia, 'times new roman', serif;
     margin-top: 10px;
     padding-bottom: 1px;
+}
+h3 a {
+    color: #333;
 }
 .big-right {
     text-align: left;
@@ -28,8 +42,8 @@ h3 {
     text-align: left;
 }
 .wrap-title {
-    white-space: wrap;
     overflow: auto;
+    white-space: wrap;
 }
 h1 a:hover,
 h2 a:hover,
@@ -38,7 +52,7 @@ h4 a:hover {
     text-decoration: none;
 }
 time {
-    color: #CCC;
+    color: #ccc;
 }
 h2 a span,
 #articlebox,
@@ -52,28 +66,28 @@ h2 a span,
     margin-bottom: 10px;
 }
 .options {
-    color: #CCC;
+    color: #ccc;
     font-size: x-large;
     padding-top: 8px;
 }
 .options a {
-    color: #CCC;
-    margin-right: 10px;
+    color: #ccc;
     margin-left: 0;
+    margin-right: 10px;
 }
 .options a:hover {
     color: #333;
-    text-decoration: none;
     cursor: pointer;
+    text-decoration: none;
 }
 .off {
     color: #999;
 }
 .on {
-    color: #FF3300!important;
+    color: #f30!important;
 }
 .on:hover {
-    color: #FF0000!important;
+    color: #f00!important;
 }
 #infscr-loading {
     margin: 20px auto;
@@ -83,42 +97,48 @@ h2 a span,
     display: none;
 }
 footer {
-    border-top: 1px dotted #CCC;
+    border-top: 1px dotted #ccc;
+    font-family: 'Open Sans', helvetica, arial, sans-serif;
     padding: 10px 0;
 }
+.article-info {
+    font-family: 'Open Sans', helvetica, arial, sans-serif;
+}
 .results-count {
-    letter-spacing: 0px;
-    background-color: #FF3300;
-    color: #FFF;
-    padding: 0 5px;
-    -moz-border-radius: 10px;
+       -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
-    -o-border-radius: 10px;
-    -ms-border-radius: 10px;
-    border-radius: 10px;
+    background-color: #f30;
+            border-radius: 10px;
+    color: #fff;
+    letter-spacing: 0;
+    padding: 0 5px;
+
+         -o-border-radius: 10px;
+        -ms-border-radius: 10px;
 }
 .highlight {
-    background-color: #FFFF88;
-    border: 1px solid #FFCF40;
-    padding: 0 2px;
-    -moz-border-radius: 4px;
+       -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-    -o-border-radius: 4px;
-    -ms-border-radius: 4px;
-    border-radius: 4px;
+    background-color: #ff8;
+    border: 1px solid #ffcf40;
+            border-radius: 4px;
+    padding: 0 2px;
+
+         -o-border-radius: 4px;
+        -ms-border-radius: 4px;
 }
 .dotted-top {
-    border-top: 1px dotted #CCC;   
+    border-top: 1px dotted #ccc;
 }
 .external-link {
-    color: #CCC;
+    color: #ccc;
 }
 .external-link:hover {
     color: #999;
     text-decoration: none;
 }
 .red {
-    color: #FF3300;
+    color: #f30;
 }
 .white, .white a {
     display: none;
@@ -128,8 +148,8 @@ footer {
         margin: 0 0 0 8px;
     }
     .wrap-title {
-        white-space: nowrap;
         overflow: hidden;
+        white-space: nowrap;
     }
     .big-right {
         text-align: right;
@@ -138,12 +158,12 @@ footer {
         text-align: right;
     }
     .options a {
-        color: #CCC;
+        color: #ccc;
         margin-left: 10px;
         margin-right: 0;
     }
     .white, .white a {
+        color: #fff!important;
         display: inline;
-        color: #FFF!important;
     }
 }

@@ -5,10 +5,10 @@ Being a small [Flask](http://flask.pocoo.org/) application written around the aw
 Screenshots
 -----------
 
-[![Expanded View of Articles](http://i.imgur.com/HDE9nj8b.jpg)](http://i.imgur.com/HDE9nj8.jpg)
-[![Condensed View of Articles](http://i.imgur.com/dfanttZb.jpg)](http://i.imgur.com/dfanttZ.jpg)
-[![Single Article](http://i.imgur.com/pNdbhTob.jpg)](http://i.imgur.com/pNdbhTo.jpg)
-[![Sample Search](http://i.imgur.com/x4YCxApb.jpg)](http://i.imgur.com/x4YCxAp.jpg)
+[![Expanded View of Articles](http://i.imgur.com/8NwIxrxb.jpg)](http://i.imgur.com/8NwIxrx.jpg)
+[![Condensed View of Articles](http://i.imgur.com/nBuxRlKb.jpg)](http://i.imgur.com/nBuxRlK.jpg)
+[![Single Article](http://i.imgur.com/ZLAVT9cb.jpg)](http://i.imgur.com/ZLAVT9c.jpg)
+[![Sample Search](http://i.imgur.com/t8YiiAhb.jpg)](http://i.imgur.com/t8YiiAh.jpg)
 
 Installation
 ------------

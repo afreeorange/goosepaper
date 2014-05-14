@@ -99,13 +99,6 @@ def search(term, number=1):
                                                 app.config['ARTICLES_PER_PAGE'])
     return render_template('list.html', paginator=paginator, term=term)
 
-    # results = []
-    # for article in articles:
-    #     results.append(mongo_object_to_dict(article))
-
-    # http://flask.pocoo.org/docs/security/#json-security
-    # return Response(json.dumps(results), mimetype='application/json')
-
 
 @app.route('/export')
 def export():
@@ -144,39 +137,6 @@ def api_stats_words():
         print mongo_object_to_dict(article)
 
     return jsonify(stats)
-
-
-@app.route('/api/statistics/domains')
-def api_stats_domains():
-    map_f = """
-        function() {
-            emit(this.domain, 1);
-        }
-    """
-
-    reduce_f = """
-        function(key, value) {
-            return Array.sum(value);
-        }
-    """
-
-    stats = {}
-    for result in SavedArticle.objects.map_reduce(map_f, reduce_f, {'merge': 'stats_domain'}):
-        stats[result.key] = result.value
-
-    return jsonify(stats)
-
-
-@app.route('/statistics')
-def statistics():
-    counts = {
-        'total': SavedArticle.objects.count(),
-        'archived': SavedArticle.objects(archived=True).count(),
-        'favorited': SavedArticle.objects(favorite=True).count(),
-        'domains': DomainStatistics.objects().order_by('-value'),
-        'words': WordStatistics.objects.count()
-    }
-    return render_template('statistics.html', counts=counts)
 
 
 @app.route('/page/<int:number>')

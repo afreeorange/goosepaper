@@ -1,6 +1,7 @@
 from datetime import datetime
 from sys import exit
 import locale
+import os
 
 import arrow
 from flask import Flask
@@ -24,14 +25,6 @@ if app.config['APPLICATION_ROOT']:
 	routed_app = DispatcherMiddleware(app, {app.config['APPLICATION_ROOT']: app})
 else:
 	routed_app = app
-
-
-# Set up compressed CSS and JS
-assets = Environment(app)
-assets.register('scripts', Bundle('js/goosepaper.js',
-                                  filters='jsmin', output='js/packed.js'))
-assets.register('stylesheets', Bundle('css/goosepaper.css', 
-                                  filters='cssmin', output='css/packed.css'))
 
 
 # Some Jinja2 helper functions 

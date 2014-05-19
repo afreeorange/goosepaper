@@ -30,11 +30,18 @@ $(function() {
         $("[data-toggle=popover]").popover();
     }
 
+    // Highlight the search term off the results page
     var search_term = get_url_param('highlight');
     if (search_term) {
         $('#content').highlight(search_term);
         $.scrollTo($('.highlight'), 800);
     };
+
+    // Export buttons (<a role="button>" didn't look good...)
+    $('#content').on('click', '.export', function() {
+        console.log('sjasd');
+        window.location = $(this).attr('url');
+    });
 
     // Show/hide the search
     $('h2 a.glyphicon-search').click(function() {

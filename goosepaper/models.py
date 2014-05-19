@@ -31,8 +31,6 @@ class DomainStatistics(db.Document):
 
 
 class WordStatistics(db.Document):
-    # http://docs.mongoengine.org/guide/document-instances.html#document-ids
-    # http://docs.mongoengine.org/en/latest/guide/defining-documents.html#working-with-existing-data
     word = db.StringField(primary_key=True)
     value = db.IntField()        
     meta = {

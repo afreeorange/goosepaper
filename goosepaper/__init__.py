@@ -28,7 +28,7 @@ else:
 
 
 # Some Jinja2 helper functions 
-app.jinja_env.globals.update(export_datestamp=lambda: arrow.now().format('dddd, D MMMM YYYY, h:m a'))
+app.jinja_env.globals.update(export_datestamp=lambda: arrow.now().format('dddd, D MMMM YYYY, h:mm a'))
 app.jinja_env.globals.update(iso_timestamp=lambda: arrow.now())
 
 

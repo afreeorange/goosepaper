@@ -8,10 +8,17 @@
 </div>
 {% endmacro %}
 
+{% macro export_popup() %}
+<div class='btn-group-vertical'>
+    <button type='button' class='btn btn-default export' url='/export/csv'>CSV</button>
+    <button type='button' class='btn btn-default export' url='/export/html'>HTML</button>
+</div>
+{% endmacro %}
+
 {% block content %}
 
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <h1>
                 goosepaper 
                 {%- if self.subtitle() %}{% block subtitle -%}{% endblock %}{% endif %}
@@ -26,8 +33,9 @@
                 {%- endif %}
             </h1>
         </div>
-        <div class="col-sm-4 big-right">
+        <div class="col-sm-5 big-right">
             <h2>
+                <a href="javascript://" class="glyphicon glyphicon-export" data-html="true" data-toggle="popover" data-placement="bottom" data-content="{{ export_popup() }}"></a>
                 <a href="javascript://" data-toggle="tooltip" data-placement="bottom" title="Search" class="glyphicon glyphicon-search{%- if request.endpoint == 'search' %} on{%- endif %}"></a>
                 <a href="javascript://" data-toggle="tooltip" data-placement="bottom" title="Condense List" class="glyphicon glyphicon-align-justify{% if request.cookies.get('fold') %} on{% endif %}"><span>Condense list</span></a>
 

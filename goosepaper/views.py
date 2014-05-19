@@ -9,6 +9,7 @@ from flask import (
     render_template, 
     request, 
     Response,
+    make_response,
     send_from_directory
 )
 from flask.ext.mongoengine import MongoEngine, Pagination
@@ -100,8 +101,8 @@ def search(term, number=1):
     return render_template('list.html', paginator=paginator, term=term)
 
 
-@app.route('/export')
-def export():
+@app.route('/export/html')
+def export_html():
     export_list = {
         'unread': SavedArticle.objects(archived=False),
         'archived': SavedArticle.objects(archived=True),
@@ -110,33 +111,12 @@ def export():
     return render_template('export.html', list=export_list)
 
 
-@app.route('/api/statistics/words')
-def api_stats_words():
-    map_f = """
-        function() { 
-            var words = this.body_plain.match(/[a-zA-Z]{3,}/g);
-            if (words === null) {
-                return;
-            };
-            for (var i = words.length - 1; i >= 0; i--) {
-                emit(words[i], 1);
-            };
-        }
-    """
-
-    reduce_f = """
-        function(key, values) {
-            return Array.sum(values);
-        }
-    """
-
-    stats = {}
-    # results = list(SavedArticle.objects.map_reduce(map_f, reduce_f, {'merge': 'stats_words'}))
-    
-    for article in WordStatistics.objects().order_by('-word').limit(250):
-        print mongo_object_to_dict(article)
-
-    return jsonify(stats)
+@app.route('/export/csv')
+def export_csv():
+    export_list = SavedArticle.objects
+    response = make_response(render_template('export.csv', list=export_list))
+    response.headers["Content-Disposition"] = "attachment; filename=goosepaper-export-%s.csv" % arrow.now().format('YYYY-MM-DDTHH.mm.ss')
+    return response
 
 
 @app.route('/page/<int:number>')

@@ -1,4 +1,4 @@
-Title,URL,Saved,Domain,Favorite,Archived
+#Title,URL,Saved,Domain,Favorite,Archived
 {% for article in list -%}
-    "{{ article.title }}", {{ article.url }}, {{ article.sent }}, {{ article.domain }}, {{ article.favorite }}, {{ article.archived }}
+    "{{ article.title }}", {{ article.url|urlencode }}, {{ article.sent|iso_timestamp }}, {{ article.domain }}, {{ article.favorite }}, {{ article.archived }}
 {% endfor %}

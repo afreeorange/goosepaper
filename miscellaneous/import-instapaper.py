@@ -16,7 +16,6 @@ soup = BeautifulSoup(open(sys.argv[1]))
 
 for link in soup.select('ol > li > a'):
     print "Trying", link.get('href')[:79], "..."
-    
     r = requests.post(API_HOST, headers={'Article': link.get('href')})
-
     print "Error!" if r.status_code != 201 else "OK"
+

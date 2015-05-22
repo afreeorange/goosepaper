@@ -1,11 +1,10 @@
-from datetime import datetime
+# coding: utf-8
+
 from sys import exit
 import locale
-import os
 
 import arrow
 from flask import Flask
-from flask.ext.assets import Environment, Bundle
 from flask.ext.mongoengine import MongoEngine
 from mongoengine import ConnectionError
 from logbook import FileHandler, Logger
@@ -21,13 +20,15 @@ locale.setlocale(locale.LC_ALL, app.config['LOCALE'])
 
 # Set up routing appropriately
 if app.config['APPLICATION_ROOT']:
-	from werkzeug.wsgi import DispatcherMiddleware
-	routed_app = DispatcherMiddleware(app, {app.config['APPLICATION_ROOT']: app})
+    from werkzeug.wsgi import DispatcherMiddleware
+    routed_app = DispatcherMiddleware(app,
+                                      {app.config['APPLICATION_ROOT']: app}
+                                      )
 else:
-	routed_app = app
+    routed_app = app
 
 
-# Some Jinja2 helper functions 
+# Some Jinja2 helper functions
 app.jinja_env.globals.update(export_datestamp=lambda: arrow.now().format('dddd, D MMMM YYYY, h:mm a'))
 app.jinja_env.globals.update(iso_timestamp=lambda: arrow.now())
 

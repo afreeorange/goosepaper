@@ -1,7 +1,6 @@
-from datetime import datetime
+# coding: utf-8
 
 import arrow
-from goose import Goose
 from goosepaper import app, db, log
 from goosepaper.models import SavedArticle
 from newspaper import Article
@@ -43,7 +42,7 @@ def save_article(article):
                              body=article.article_html,
                              body_plain=article.text,
                              authors=article.authors,
-                             domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.',''),
+                             domain=article.source_url.replace('https://', '').replace('http://', '').replace('www.', ''),
                              summary=article.text[:app.config['SUMMARY_LENGTH']]).save()
         except Exception, e:
             log.error('Error saving article: %s' % str(e))

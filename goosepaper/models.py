@@ -1,5 +1,8 @@
+# coding: utf-8
+
 from datetime import datetime
 from goosepaper import db
+
 
 class SavedArticle(db.Document):
     """ A single saved article. Field definitions are done using
@@ -24,7 +27,7 @@ class DomainStatistics(db.Document):
     # http://docs.mongoengine.org/guide/document-instances.html#document-ids
     # http://docs.mongoengine.org/en/latest/guide/defining-documents.html#working-with-existing-data
     url = db.StringField(primary_key=True)
-    value = db.IntField()        
+    value = db.IntField()
     meta = {
         'collection': 'stats_domain'
     }
@@ -32,7 +35,7 @@ class DomainStatistics(db.Document):
 
 class WordStatistics(db.Document):
     word = db.StringField(primary_key=True)
-    value = db.IntField()        
+    value = db.IntField()
     meta = {
         'collection': 'stats_words'
     }

@@ -1,21 +1,19 @@
-import json
+# coding: utf-8
+
 import os
 
 import arrow
 from flask import (
-    abort, 
-    Flask, 
-    jsonify, 
-    render_template, 
-    request, 
-    Response,
+    jsonify,
+    render_template,
+    request,
     make_response,
     send_from_directory
 )
-from flask.ext.mongoengine import MongoEngine, Pagination
-from goosepaper import app, log, db
-from goosepaper.helpers import extract, save_article, mongo_object_to_dict
-from goosepaper.models import SavedArticle, DomainStatistics, WordStatistics
+from flask.ext.mongoengine import Pagination
+from goosepaper import app, log
+from goosepaper.helpers import extract, save_article
+from goosepaper.models import SavedArticle
 from mongoengine import Q
 
 
@@ -25,9 +23,11 @@ from mongoengine import Q
 def archive(number=1):
     """ Manage archive """
     if request.method == 'GET':
-        paginator = Pagination(SavedArticle.objects(archived=True).order_by('-sent'), 
-                               number, 
-                               app.config['ARTICLES_PER_PAGE'])
+        paginator = Pagination(
+                        SavedArticle.objects(archived=True).order_by('-sent'),
+                        number,
+                        app.config['ARTICLES_PER_PAGE'],
+                        )
         return render_template('list.html', paginator=paginator)
 
     # Get the ID. Abort if not supplied in headers.
@@ -38,7 +38,9 @@ def archive(number=1):
 
     # Set or unset the archive attribute depending on request method
     action = {'PUT': True, 'DELETE': False}
-    SavedArticle.objects.get_or_404(id__exact=id).update(set__archived=action[request.method])
+    SavedArticle.objects.get_or_404(id__exact=id).update(
+                        set__archived=action[request.method]
+                        )
     log.info('%s %s in archive' % (id, request.method))
     return '200', 200
 
@@ -49,9 +51,11 @@ def archive(number=1):
 def favorites(number=1):
     """ Manage favorites """
     if request.method == 'GET':
-        paginator = Pagination(SavedArticle.objects(favorite=True).order_by('-sent'), 
-                               number, 
-                               app.config['ARTICLES_PER_PAGE'])
+        paginator = Pagination(
+                        SavedArticle.objects(favorite=True).order_by('-sent'),
+                        number,
+                        app.config['ARTICLES_PER_PAGE'],
+                        )
         return render_template('list.html', paginator=paginator)
 
     # Get the ID. Abort if not supplied in headers.
@@ -62,7 +66,9 @@ def favorites(number=1):
 
     # Set or unset the favorites attribute depending on request method
     action = {'PUT': True, 'DELETE': False}
-    SavedArticle.objects.get_or_404(id__exact=id).update(set__favorite=action[request.method])
+    SavedArticle.objects.get_or_404(id__exact=id).update(
+                        set__favorite=action[request.method]
+                        )
     log.info('%s %s in favorites' % (id, request.method))
     return '200', 200
 
@@ -78,7 +84,7 @@ def article(id=None):
     elif request.method == 'DELETE':
         try:
             article.delete()
-        except Exception, e:
+        except Exception:
             return '500', 500
         else:
             log.info('%s deleted' % id)
@@ -91,12 +97,14 @@ def search(term, number=1):
     term = term.strip()
 
     if len(term) < 3:
-        return jsonify({'error': 'Search term must be longer than 2 characters'})
+        return jsonify(
+                {'error': 'Search term must be longer than 2 characters'}
+                )
 
-    paginator = Pagination(SavedArticle.objects(Q(title__icontains=term)  | 
-                                                Q(domain__icontains=term) | 
-                                                Q(body__icontains=term)).exclude('body').order_by('-sent'), 
-                                                number, 
+    paginator = Pagination(SavedArticle.objects(Q(title__icontains=term) |
+                                                Q(domain__icontains=term) |
+                                                Q(body__icontains=term)).exclude('body').order_by('-sent'),
+                                                number,
                                                 app.config['ARTICLES_PER_PAGE'])
     return render_template('list.html', paginator=paginator, term=term)
 
@@ -128,12 +136,14 @@ def index(number=1):
 
     # Display articles if GET-ting a page
     if request.method == 'GET':
-        paginator = Pagination(SavedArticle.objects(archived=False).order_by('-sent'), 
-                               number, 
-                               app.config['ARTICLES_PER_PAGE'])
+        paginator = Pagination(
+                        SavedArticle.objects(archived=False).order_by('-sent'),
+                        number,
+                        app.config['ARTICLES_PER_PAGE'],
+                        )
         return render_template('list.html', paginator=paginator)
 
-    # Only other method allowed at this point is POST. 
+    # Only other method allowed at this point is POST.
     # Check for 'Article' header and get the URL.
     if 'Article' not in request.headers:
         return '401', 401
@@ -150,5 +160,7 @@ def index(number=1):
 
 @app.route('/favicon.png')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static/img'),
-                               'favicon.png')
+    return send_from_directory(
+                    os.path.join(app.root_path, 'static/img'),
+                    'favicon.png'
+                    )

@@ -1,14 +1,14 @@
 # Goosepaper
 
-Being a small [Flask](http://flask.pocoo.org/) application written around the awesome [Newspaper](https://github.com/codelucas/newspaper) module.
+Being a small [Flask](http://flask.pocoo.org/) application written around [Newspaper](https://github.com/codelucas/newspaper).
 
 Screenshots
 -----------
 
-![Expanded View of Articles](http://i.imgur.com/8NwIxrxb.jpg)
-![Condensed View of Articles](http://i.imgur.com/nBuxRlKb.jpg)
-![Single Article](http://i.imgur.com/ZLAVT9cb.jpg)
-![Sample Search](http://i.imgur.com/t8YiiAhb.jpg)
+![Expanded View of Articles](http://i.imgur.com/8NwIxrx.jpg)
+![Condensed View of Articles](http://i.imgur.com/nBuxRlK.jpg)
+![Single Article](http://i.imgur.com/ZLAVT9c.jpg)
+![Sample Search](http://i.imgur.com/t8YiiAh.jpg)
 
 Installation
 ------------
@@ -53,15 +53,13 @@ _Or_, source `bin/activate` and then
 To Do
 -----
 
-* Authentication
-* Correct HTTP status codes
-* API
-* Use HTTP data instead of headers for URIs
-* Ability to edit articles
-* Export to HTML and PDF
-* Delete confirmation
-* uWSGI instead of Gunicorn (?)
-* Test/deploy on Heroku
+* [ ] Authentication
+* [ ] Correct HTTP status codes
+* [ ] API
+* [ ] Use HTTP data instead of headers for URIs
+* [ ] Ability to edit articles
+* [ ] Export to HTML and PDF
+* [ ] Delete confirmation
 
 License
 -------
